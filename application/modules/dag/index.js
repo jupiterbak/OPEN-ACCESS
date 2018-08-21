@@ -1,5 +1,17 @@
 /**
  * Created by Administrator on 01.12.2016.
+ * 
+ * This program is free software: you can redistribute it and/or modify  
+ * it under the terms of the GNU General Public License as published by  
+ * the Free Software Foundation, version 3.
+ *
+ * This program is distributed in the hope that it will be useful, but 
+ * WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License 
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 var when = require("when");
@@ -16,7 +28,7 @@ function createContainer(config) {
     moduleSettings.name = moduleSettings.name || moduleSettings.id;
 
     try {
-        var sModuleType = require("../containers/"+ moduleSettings.type);
+        var sModuleType = require("../containers/" + moduleSettings.type);
         //sModuleType.init(moduleSettings);
     } catch (error) {
         Log.warn("Container cannot be crated. Container: " + config.name + " - Error: " + error);
@@ -28,7 +40,7 @@ function createContainer(config) {
     return clone(obj_container);
 }
 
-function DAG(settings,engine) {
+function DAG(settings, engine) {
 
     this.activeContainers = {};
     this.input_variables = {};
@@ -37,19 +49,19 @@ function DAG(settings,engine) {
     this.basic_outputs = {};
     this.engine = engine;
 
-    this.getNode = function (id) {
+    this.getNode = function(id) {
         return activeNodes[id];
     };
 
-    this.getActiveNodes = function () {
+    this.getActiveNodes = function() {
         return activeNodes;
     };
 
-    this.update = function (_flow, engine) {
+    this.update = function(_flow, engine) {
 
     };
 
-    this.init = function (flow_config) {
+    this.init = function(flow_config) {
         var self = this;
         this.settings = flow_config || {};
         this.settings.id = this.settings.id || OpenAccessUtil.generateId();
@@ -67,7 +79,7 @@ function DAG(settings,engine) {
             if (obj != null) {
                 self.activeContainers[obj.id] = obj;
                 // get input_variable data streams
-                obj.inputsstreams.forEach(function (stream) {
+                obj.inputsstreams.forEach(function(stream) {
                     if (stream.inputsetting.type === "base_input") {
                         self.basic_inputs[stream.inputsetting.id] = stream;
                     } else {
@@ -76,7 +88,7 @@ function DAG(settings,engine) {
                     }
                 });
 
-                obj.outputsstreams.forEach(function (stream) {
+                obj.outputsstreams.forEach(function(stream) {
                     if (stream.outsetting.type === "base_output") {
                         self.basic_outputs[stream.outsetting.id] = stream;
                     } else {
@@ -88,31 +100,31 @@ function DAG(settings,engine) {
         }
     };
 
-    this.start = function () {
+    this.start = function() {
         // Connect The basic output to the output event bus
 
         // Connect the basic input to the input event bus
-        this.basic_inputs.forEach(function (stream) {
+        this.basic_inputs.forEach(function(stream) {
             //this.engine.inputbus
         })
     };
 
-    this.stop = function (stopList) {
+    this.stop = function(stopList) {
 
     };
 
-    this.handleStatus = function (node, statusMessage) {
+    this.handleStatus = function(node, statusMessage) {
 
     };
 
-    this.handleError = function (node, logMessage, msg) {
+    this.handleError = function(node, logMessage, msg) {
 
     };
 
 }
 
 module.exports = {
-    create: function(settings,engine) {
-        return new DAG(settings,engine);
+    create: function(settings, engine) {
+        return new DAG(settings, engine);
     }
 }
