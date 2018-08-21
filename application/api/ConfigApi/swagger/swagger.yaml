@@ -1,0 +1,179 @@
+---
+swagger: "2.0"
+info:
+  description: "Open Access Standard Configuration Rest Api"
+  version: "1.0.0"
+  title: "OPEN ACCESS CONFIGURATION API"
+host: "localhost:55554"
+basePath: "/"
+schemes:
+- "http"
+- "https"
+consumes:
+- "application/json"
+- "application/x-www-form-urlencoded"
+produces:
+- "application/json"
+paths:
+  /setting:
+    get:
+      tags:
+      - "Setting"
+      summary: "Current Setting of the module."
+      description: "The models endpoint returns information about the current settings\
+        \ of the engine.\n"
+      operationId: "getSetting"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "key"
+        in: "query"
+        description: "key of the setting"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "An array of founded models."
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Setting"
+    post:
+      tags:
+      - "Post_Settings"
+      summary: "Add/Update a Setting."
+      operationId: "postSettings"
+      parameters:
+      - name: "key"
+        in: "formData"
+        description: "key of the setting"
+        required: false
+        type: "string"
+      - name: "value"
+        in: "formData"
+        description: "value of the setting in JSON Format"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Heartbeat object as a response to the request."
+          schema:
+            $ref: "#/definitions/Error"
+        204:
+          description: "No data"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Post_Settings"
+  /variables:
+    get:
+      tags:
+      - "Variables"
+      summary: "Current Setting of the module."
+      description: "The models endpoint returns information about the avialable variables\
+        \ of the engine.\n"
+      operationId: "getAvialableVariables"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "An array of founded models."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Variables"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Variables"
+  /valuestream:
+    get:
+      tags:
+      - "Value Stream"
+      summary: "Get the stream endpoint of a variable."
+      description: "The valuestream endpoint returns a data stream configuration for\
+        \ a specifc variable.\n"
+      operationId: "getValueStream"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "variable_id"
+        in: "query"
+        description: "id oder name of the variable"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "An Object describing a specific stream endpoint."
+          schema:
+            type: "object"
+            properties: {}
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "ValueStream"
+definitions:
+  Variables:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier representing a specific model of a mechatronic\
+          \ component."
+      name:
+        type: "string"
+        description: "Name of a variable"
+      text:
+        type: "string"
+        description: "Displayname of a variable."
+      subtext:
+        type: "string"
+        description: "Displayname of a variable."
+      type:
+        type: "string"
+        description: "Datatype of a variable."
+      unit:
+        type: "string"
+        description: "SI Unit of the variables."
+      default:
+        type: "string"
+        description: "Default value of the variables."
+      min:
+        type: "string"
+        description: "Default value of the variables."
+      max:
+        type: "string"
+        description: "Default value of the variables."
+      show:
+        type: "string"
+        description: "Default value of the variables."
+      writable:
+        type: "number"
+        description: "Lower bound of the estimated price."
+  Streamendpoint:
+    type: "object"
+    properties:
+      protocol:
+        type: "string"
+        description: "Unique identifier representing the communication protocol."
+      msg_id:
+        type: "string"
+        description: "Message ID"
+      full_uri:
+        type: "string"
+        description: "Full url of the endpoint."
+  Error:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"
+      fields:
+        type: "string"

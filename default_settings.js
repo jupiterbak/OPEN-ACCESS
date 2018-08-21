@@ -1,0 +1,566 @@
+/**
+ * Copyright 2018 FAPS.
+ *
+ * File: open_access.js
+ * Project: SP 142
+ * Author:
+ *  - Jupiter Bakakeu
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * --------------------------------------------------------------------
+ * ###################### Changes #####################################
+ * -- 28.11.2016
+ *      Initial implementation
+ */
+
+// The `https` setting requires the `fs` module. Uncomment the following
+// to make it available:
+//var fs = require("fs");
+
+module.exports = {
+    // the tcp port that the OPEN_ACCESS web server is listening on
+    uiPort: process.env.PORT || 1717,
+
+    // By default, the OPEN_ACCESS UI accepts connections on all IPv4 interfaces.
+    // The following property can be used to listen on a specific interface. For
+    // example, the following would only allow connections from the local machine.
+    uiHost: "127.0.0.1",
+
+    // Retry time in milliseconds for TCP socket connections
+    socketReconnectTime: 10000,
+
+    // Timeout in milliseconds for TCP server socket connections
+    //  defaults to no timeout
+    socketTimeout: 120000,
+
+    // Timeout in milliseconds for HTTP request connections
+    //  defaults to 120 seconds
+    httpRequestTimeout: 120000,
+
+    // The maximum length, in characters, of any message sent to the debug sidebar tab
+    debugMaxLength: 1000,
+
+
+    // By default, credentials are encrypted in storage using a generated key. To
+    // specify your own secret, set the following property.
+    // If you want to disable encryption of credentials, set this property to false.
+    // Note: once you set this property, do not change it - doing so will prevent
+    // OPEN_ACCESS from being able to decrypt your existing credentials and they will be
+    // lost.
+    //credentialSecret: "a-secret-key",
+
+    // The maximum size of HTTP request that will be accepted by the runtime swagger.
+    // Default: 5mb
+    apiMaxLength: '10mb',
+
+    // Securing OPEN_ACCESS
+    // -----------------
+    // To password protect the OPEN_ACCESS editor and admin API, the following
+    // property can be used. See http://nodered.org/docs/security.html for details.
+    adminAuth: {
+        type: "credentials",
+        users: [{
+            username: "admin",
+            password: "$2a$08$zZWtXTja0fB1pzD4sHCMyOCMYz2Z6dNbM6tl8sJogENOMcxWV9DN.",
+            permissions: "*"
+        }]
+    },
+
+    // The following property can be used to enable HTTPS
+    // See http://nodejs.org/api/https.html#https_https_createserver_options_requestlistener
+    // for details on its contents.
+    // See the comment at the top of this file on how to load the `fs` module used by
+    // this setting.
+    //
+    //https: {
+    //    key: fs.readFileSync('privatekey.pem'),
+    //    cert: fs.readFileSync('certificate.pem')
+    //},
+
+    // The following property can be used to cause insecure HTTP connections to
+    // be redirected to HTTPS.
+    requireHttps: false,
+
+
+    // Anything in this hash is globally available to all functions.
+    // It is accessed as context.global.
+    // eg:
+    //    functionGlobalContext: { os:require('os') }
+    // can be accessed in a function block as:
+    //    context.global.os
+
+    functionGlobalContext: {
+        os: require('os'),
+        // octalbonescript:require('octalbonescript'),
+        // jfive:require("johnny-five"),
+        // j5board:require("johnny-five").Board({repl:false})
+    },
+
+    // The following property can be used to order the categories in the editor
+    // palette. If a node's category is not in the list, the category will get
+    // added to the end of the palette.
+    // If not set, the following default order is used:
+    //paletteCategories: ['subflows', 'input', 'output', 'function', 'social', 'mobile', 'storage', 'analysis', 'advanced'],
+
+    // Configure the logging output
+    runtimeMetricInterval: 60000,
+    logging: {
+        // Only console logging is currently supported
+        console: {
+            // Level of logging to be recorded. Options are:
+            // fatal - only those errors which make the application unusable should be recorded
+            // error - record errors which are deemed fatal for a particular request + fatal errors
+            // warn - record problems which are non fatal + errors + fatal errors
+            // info - record information about the general running of the application + warn + error + fatal errors
+            // debug - record information which is more verbose than info + info + warn + error + fatal errors
+            // trace - record very detailed logging + debug + info + warn + error + fatal errors
+            level: "info",
+            // Whether or not to include metric events in the log output
+            metrics: true,
+            // Whether or not to include audit events in the log output
+            audit: false
+        }
+    },
+
+    api: [{
+            name: "ConfigApi",
+            type: "Swagger",
+            port: 55554
+        }
+        // ,
+        // {
+        //     name: "EberleinApi",
+        //     type: "Swagger",
+        //     port: 8090
+        // }
+    ],
+
+    // Configure the logging output
+    southbounds: {
+        // Only dummy is currently supported
+        dummy: {
+            id: "67435124",
+            name: "S_Dummy",
+            type: "dummyClient",
+            level: "info",
+            modulesetting: { interval: 1000 },
+            outputs_variables: [{
+                    name: "I",
+                    datatype: "real",
+                    si_unit: "A",
+                    default: 0.0
+                },
+                {
+                    name: "U",
+                    datatype: "real",
+                    si_unit: "V",
+                    default: 0.0
+                },
+                {
+                    name: "t",
+                    datatype: "real",
+                    si_unit: "s",
+                    default: 0.0
+                }
+            ],
+            system: false
+        },
+        // example_SNAP7_config: {
+        //     id: "SNAP7Client1", // Unique ID of the module in the global configuration
+        //     name: "SNAP7Client1", // Name of the module instance.
+        //     type: "SNAP7Client", // Type of the module, should always be "SNAP7Client" in order to use this module
+        //     modulesetting: {
+        //         ip: '192.168.1.16', // Remote IP-Address of the PLC server module
+        //         rack: 0, // PLC Rack number
+        //         slot: 1, // PLC Slot number
+        //         interval: 1000, // Interval to pool the data
+        //     },
+        //     outputs_variables: [ // The output variables specify how to interpret and map the data received
+        //         {
+        //             name: "Portal_Spannung_L1_N", // Variable that will hold the serialized value comming from the PLC.
+        //             datatype: "real", // Type of the data to read: "real", "int", "byte"
+        //             si_unit: "V", // Unit of the data variable. It is optional
+        //             area: 0x81, // Area identifier (0x81 Process inputs, 0x82 Process outputs, 0x83	Merkers, 0x84 DB, 0x1C Counters,0x1D Timers)
+        //             dbNumber: 21, // DB number if area = 0x84, otherwise ignored
+        //             start: 0, // Offset to start
+        //             amount: 100, // Amount of words to read
+        //             wordLen: 0x08 // Word size (0x01 Bit (inside a word), 0x02 Byte (8 bit), 0x04	Word (16 bit), 0x06	Double Word (32 bit), 0x08	Real (32 bit float), 0x1C	Counter (16 bit), 0x1D	Timer (16 bit))
+        //         },
+        //         {
+        //             name: "Portal_Spannung_L3_N", // Variable that will hold the serialized value comming from the PLC.
+        //             datatype: "real", // Type of the data to read: "real", "int", "byte"
+        //             si_unit: "V", // Unit of the data variable. It is optional
+        //             area: 0x81, // Area identifier (0x81 Process inputs, 0x82 Process outputs, 0x83	Merkers, 0x84 DB, 0x1C Counters,0x1D Timers)
+        //             dbNumber: 21, // DB number if area = 0x84, otherwise ignored
+        //             start: 0, // Offset to start
+        //             amount: 100, // Amount of words to read
+        //             wordLen: 0x08 // Word size (0x01 Bit (inside a word), 0x02 Byte (8 bit), 0x04	Word (16 bit), 0x06	Double Word (32 bit), 0x08	Real (32 bit float), 0x1C	Counter (16 bit), 0x1D	Timer (16 bit))
+        //         }
+        //     ]
+        // },
+        // example_opcua_client_config: {
+        //     id: "OPCUAClient1", // Unique ID of the module in the global configuration
+        //     name: "OPCUAClient1", // Name of the module instance.
+        //     type: "OPCUAClient", // Type of the module, should always be "OPCUAClient" in order to use this module
+        //     modulesetting: {
+        //         server_adress: "localhost", // Address of the remote opc ua server
+        //         port: 48020, // Remote Port of the opc ua server module
+        //         interval: 1000, // default monitoring interval
+        //     },
+        //     outputs_variables: [ // The output variables specify how to interpret and map the data received
+        //         {
+        //             name: "Demo.Dynamic.Scalar.Double", // Variable Name
+        //             nodeId: {
+        //                 ns: 4, // NamespaceIndex of the variable to monitor
+        //                 nid: "Demo.Dynamic.Scalar.Double" // NodeId of the opcua variable
+        //             },
+        //             interval: 1000, // Monitoring interval
+        //             default: 0.0 // Default value
+        //         },
+        //         {
+        //             name: "Demo.Dynamic.Scalar.Float", // Variable Name
+        //             nodeId: {
+        //                 ns: 4, // NamespaceIndex of the variable to monitor
+        //                 nid: "Demo.Dynamic.Scalar.Float" // NodeId of the opcua variable
+        //             },
+        //             interval: 1000, // Monitoring interval
+        //             default: 0.0 // Default value
+        //         }
+        //     ]
+        // },
+        // example_opcua_client_config2: {
+        //     id: "OPCUAClient2", // Unique ID of the module in the global configuration
+        //     name: "OPCUAClient2", // Name of the module instance.
+        //     type: "OPCUAClient", // Type of the module, should always be "OPCUAClient" in order to use this module
+        //     modulesetting: {
+        //         server_adress: "localhost", // Address of the remote opc ua server
+        //         port: 48022, // Remote Port of the opc ua server module
+        //         interval: 1000, // default monitoring interval
+        //     },
+        //     outputs_variables: [ // The output variables specify how to interpret and map the data received
+        //         {
+        //             name: "Demo.Dynamic.Scalar.Double", // Variable Name
+        //             nodeId: {
+        //                 ns: 4, // NamespaceIndex of the variable to monitor
+        //                 nid: "Demo.Dynamic.Scalar.Double" // NodeId of the opcua variable
+        //             },
+        //             interval: 5000, // Monitoring interval
+        //             default: 0.0 // Default value
+        //         },
+        //         {
+        //             name: "Demo.Dynamic.Scalar.Float", // Variable Name
+        //             nodeId: {
+        //                 ns: 4, // NamespaceIndex of the variable to monitor
+        //                 nid: "Demo.Dynamic.Scalar.Float" // NodeId of the opcua variable
+        //             },
+        //             interval: 5000, // Monitoring interval
+        //             default: 0.0 // Default value
+        //         }
+        //     ]
+        // },
+        // example_modbus_config: {
+        //     id: "modbusTCP1", // Unique ID of the module in the global configuration
+        //     name: "modbusTCP1", // Name of the module instance.
+        //     type: "ModBusClient", // Type of the module, should always be "ModBusClient" in order to use this module
+        //     modulesetting: {
+        //         ip: '192.168.1.16', // Remote IP-Address of the Modbus server module
+        //         port: 502, // Remote Port of the ModBus server module
+        //         clientID: 9, // ModBus Client ID
+        //         interval: 1000, // Interval to pool the data
+        //         start: 1, // Start Address of the registers to read
+        //         size: 100, // Size in Bytes of the registers to read
+        //         object_name: "Portal_Stream_Energy_Data" // Name of the object that will hold all the data read.
+        //     },
+        //     outputs_variables: [ // The output variables specify how to interpret and map the data received
+        //         {
+        //             name: "Portal_Spannung_L1_N", // Variable Name
+        //             datatype: "real", // Type of the data to read: "real", "int", "byte"
+        //             si_unit: "V", // Unit of the data variable. It is optional
+        //             address: 1, // Start Address on the remote modBus server.
+        //             default: 0.0 // Default value
+        //         },
+        //         {
+        //             name: "Portal_Spannung_L2_N",
+        //             datatype: "real",
+        //             si_unit: "V",
+        //             address: 1,
+        //             default: 0.0
+        //         }
+        //     ]
+        // },
+        // exampleAMQPClient_config: {
+        //     id: "DemonstratorProgramFromCloud",
+        //     name: "DemonstratorProgramFromCloud",
+        //     type: "AMQPInputStreamer",
+        //     level: "info",
+        //     modulesetting: {
+        //         ip: "amqp://esys:esys@131.188.113.59",
+        //         exchange: 'AMQPStreamer_Exchange_ProgramFromCloud',
+        //         queue: 'DemonstratorProgramFromCloud'
+        //     },
+        //     outputs_variables: [{
+        //         name: "FAPS_DemonstratorProgramFromCloud_Input",
+        //         datatype: "Object",
+        //         si_unit: "-",
+        //         default: {}
+        //     }],
+        //     system: false
+        // }
+    },
+    northbounds: {
+        // example_config: {
+        //     id: "AMQPOutputStreamer1", // Unique ID of the module in the global configuration
+        //     name: "AMQPOutputStreamer1", // Name of the module instance.
+        //     type: "AMQPOutputStreamer", // Type of the module, should always be "AMQPOutputStreamer" in order to use this module
+        //     modulesetting: {
+        //         server_address: "amqp://esys:esys@131.188.113.59", // Remote Address of the amqp server module
+        //         exchange: 'AMQPStreamer_Exchange_ProgramFromCloud', // RabbitMQ Exchange, since we used a rabbitMQ Client
+        //         queue: 'DemonstratorProgramToCloud' // RabbitMQ dedicated Que name 
+
+        //     },
+        //     inputs_variables: [ // The output variables specify how to interpret and map the data received
+        //         {
+        //             name: "P1", // Name of the variable that will hold the data received
+        //             datatype: "Object", // All data received will be encapsulated in an object
+        //             si_unit: "-",
+        //             default: {}
+        //         }
+        //     ]
+        // },
+        // MQTT_example_config: {
+        //     id: "MQTTStreamer1", // Unique ID of the module in the global configuration
+        //     name: "MQTTStreamer1", // Name of the module instance.
+        //     type: "MQTTStreamer", // Type of the module, should always be "MQTTStreamer" in order to use this module
+        //     modulesetting: {
+        //         ip: "mqtt://test.mosquitto.org:1883", // MQTT Remote Endpoint
+        //         user: "test", // Username
+        //         pass: "test", // Pass
+        //         topic: "MQTT Topic" // MQTT Topic
+        //     },
+        //     inputs_variables: [ // The output variables specify the variables to generate
+        //         {
+        //             name: "P1", // Variable Name
+        //             datatype: "real", // Type of the data to read: "real", "int", "byte"
+        //             si_unit: "V", // Unit of the data variable. It is optional
+        //             default: 0.0 // Default value
+        //         },
+        //         {
+        //             name: "P2",
+        //             datatype: "real",
+        //             si_unit: "V",
+        //             default: 0.0
+        //         }
+        //     ]
+        // },
+        // OPCUAStreamer_example_config: {
+        //     id: "OPCUAClientStreamer1", // Unique ID of the module in the global configuration
+        //     name: "OPCUAClientStreamer1", // Name of the module instance.
+        //     type: "OPCUAClientStreamer", // Type of the module, should always be "OPCUAClientStreamer" in order to use this module
+        //     modulesetting: {
+        //         server_adress: "localhost", // Address of the remote opc ua server
+        //         port: 48020, // Remote Port of the opc ua server module
+        //     },
+        //     inputs_variables: [ // The output variables specify how to interpret and map the data received
+        //         {
+        //             name: "P1", // Input Variable Name
+        //             nodeId: {
+        //                 ns: 4, // NamespaceIndex of the variable to monitor
+        //                 nid: "Demo.Static.Scalar.Double" // NodeId of the opcua variable
+        //             },
+        //             opcuaDataType: 11, //( Boolean: 1,SByte:2,Byte :3,Int16: 4, UInt16: 5, Int32: 6, UInt32: 7,Int64: 8, UInt64: 9, Float: 10, Double: 11, String: 12, DateTime: 13, Guid:14,
+        //             //ByteString:  15, XmlElement: 16, NodeId: 17, ExpandedNodeId:18, StatusCode: 19, QualifiedName: 20, LocalizedText: 21, ExtensionObject: 22, DataValue:23, Variant: 24, DiagnosticInfo:   25 )
+        //             default: 0.0 // Default value
+        //         }
+        //     ]
+        // },
+        // WSSStreamer_example_config: {
+        //     id: "WSStreamer1", // Unique ID of the module in the global configuration
+        //     name: "WSStreamer1", // Name of the module instance.
+        //     type: "WSStreamer", // Type of the module, should always be "WSStreamer" in order to use this module
+        //     modulesetting: {
+        //         port: 8080 // local port of the websocket server.
+        //     },
+        //     inputs_variables: [ // The output variables specify the variables to generate
+        //         {
+        //             name: "P1", // Variable Name
+        //             datatype: "real", // Type of the data to read: "real", "int", "byte"
+        //             si_unit: "V", // Unit of the data variable. It is optional
+        //             default: 0.0 // Default value
+        //         },
+        //         {
+        //             name: "P2",
+        //             datatype: "real",
+        //             si_unit: "V",
+        //             default: 0.0
+        //         }
+        //     ]
+        // },
+
+        opcua0: {
+            id: "OPCUAServerStreamer_1",
+            name: "OPCUAServerStreamer_1",
+            type: "OPCUAServerStreamer",
+            level: "info",
+            modulesetting: {
+                ip: "localhost",
+                port: 48024,
+                endpointName: 'OPCUA@FAPS',
+                serverInfo: {
+                    applicationUri: "http://faps.fau.de/OPCUA_SERVER",
+                    productUri: "faps.fau.de/ESYS_DEMONSTRATOR_example",
+                    applicationName: { text: "ESYS_DEMONSTRATOR@FAPS" }
+                },
+                serverNodeSet: [ // Server node set. Each item of these array will be instantiated in a separate namespace.
+                    "./node_modules_xml/Opc.Ua.Plc.NodeSet2.xml",
+                    "./node_modules_xml/demonstrator/faps.xml",
+                    "./node_modules_xml/demonstrator/vdma_24582_condition_monitoring.xml",
+                    "./node_modules_xml/demonstrator/packml.xml",
+                    "./node_modules_xml/demonstrator/energybaustein.xml",
+                    "./node_modules_xml/demonstrator/esys_demonstrator.xml"
+                ],
+                fromObject: {
+                    enable: false,
+                    object_inputs: [{
+                            name: "Portal_Stream_Energy_Data",
+                            variables: [{
+                                name: "P2",
+                                datatype: "real",
+                                si_unit: "A",
+                                default: 0.0,
+                                //-------------
+                                ns: "http://faps.fau.de/ESYS_DEMONSTRATOR/",
+                                nodeID: "FB1_Foerderband_Antrieb_acceleration"
+                                    //-------------
+                            }]
+                        },
+                        {
+                            name: "Demonstrator_Stream_Data",
+                            variables: [{
+                                name: "encoder_values_x",
+                                datatype: "real",
+                                si_unit: "V",
+                                default: 0.0,
+                                //-------------
+                                ns: "http://faps.fau.de/ESYS_DEMONSTRATOR/",
+                                nodeID: "FB1_Foerderband_Antrieb_electricalcurrent"
+                                    //-------------
+                            }]
+                        }
+                    ]
+                }
+            },
+            inputs_variables: [ // The output variables specify how to interpret and map the data received
+                {
+                    name: "P1", // Variable Name
+                    targetNodeID: {
+                        ns: "http://faps.fau.de/ESYS_DEMONSTRATOR/", // Namespace uri
+                        nid: "FB1_Foerderband_Antrieb_acceleration" // NodeId of the opcua variable
+                    },
+                    datatype: "real",
+                    default: 0.0 // Default value
+                },
+                {
+                    name: "P2",
+                    targetNodeID: {
+                        ns: "http://faps.fau.de/ESYS_DEMONSTRATOR/", // Namespace uri
+                        nid: "FB1_Foerderband_Antrieb_electricalcurrent" // NodeId of the opcua variable
+                    },
+                    datatype: "real",
+                    default: 0.0
+                }
+            ],
+            system: false
+        }
+    },
+    engine: {
+        settings: {},
+        flows: {
+            dummy_DEMO: {
+                id: "dummy_DEMO",
+                name: "dummy_DEMO",
+                type: "myfghfFlow",
+                author: "Jupiter Bakakeu",
+                version: "0.0.0.1",
+                containers: {
+                    sseese: {
+                        id: "sseese",
+                        name: "MyContainer",
+                        type: "MULT2",
+                        inputs: [{
+                                name: "U",
+                                label: "U(V)",
+                                datatype: "real",
+                                si_unit: "V",
+                                default: 0.0,
+                                type: "base_input",
+                                variable: "U"
+                            },
+                            {
+                                name: "I",
+                                label: "I(A)",
+                                datatype: "real",
+                                si_unit: "A",
+                                default: 0.0,
+                                type: "base_input",
+                                variable: "I"
+                            }
+                        ],
+                        outputs: [{
+                            name: "P1",
+                            label: "P1(W)",
+                            datatype: "real",
+                            si_unit: "W",
+                            default: 0.0,
+                            type: "base_output",
+                            variable: "P1"
+                        }]
+                    },
+                    TestADD: {
+                        id: "TestADD",
+                        name: "MyOtherContainer",
+                        type: "ADD2",
+                        inputs: [{
+                                name: "OPCVar",
+                                label: "OPCVar",
+                                datatype: "real",
+                                si_unit: "V",
+                                default: 0.0,
+                                type: "base_input",
+                                variable: "OPCVar"
+                            },
+                            {
+                                name: "t",
+                                label: "t",
+                                datatype: "real",
+                                si_unit: "",
+                                default: 0.0,
+                                type: "base_input",
+                                variable: "t"
+                            }
+                        ],
+                        outputs: [{
+                            name: "P2",
+                            label: "P2(W)",
+                            datatype: "real",
+                            si_unit: "W",
+                            default: 0.0,
+                            type: "base_output",
+                            variable: "P2"
+                        }]
+                    }
+                }
+            }
+        }
+    }
+};

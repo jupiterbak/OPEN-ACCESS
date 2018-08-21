@@ -1,0 +1,263 @@
+---
+swagger: "2.0"
+info:
+  description: "Open Access Standard Rest Api for Dr. Eberlein"
+  version: "1.0.0"
+  title: "OPEN ACCESS EBERLEIN API"
+host: "localhost"
+basePath: "/v1"
+schemes:
+- "http"
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /models:
+    get:
+      tags:
+      - "Models"
+      summary: "Mechatronic component model list."
+      description: "The models endpoint returns information about founded model of\
+        \ a specific PLC.\nThe response includes a list of models of all mechatronic\
+        \ components found in the targeted machine.\n"
+      operationId: "modelsGET"
+      parameters:
+      - name: "ip"
+        in: "query"
+        description: "IP address of the target machine."
+        required: true
+        type: "string"
+        format: "ie. 192.168.0.1"
+      - name: "port"
+        in: "query"
+        description: "TCP/IP Port of the target machine."
+        required: true
+        type: "integer"
+        format: "ie. 8080"
+      - name: "servername"
+        in: "query"
+        description: "Name of the server"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "An array of founded models."
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Model"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Models"
+  /models/{model_id}:
+    get:
+      tags:
+      - "Model"
+      summary: "Mechatronic component model."
+      description: "The model endpoint returns information about specific model of\
+        \ a specific PLC.\nThe response includes a list of models of all mechatronic\
+        \ components found in the targeted machine.\n"
+      operationId: "modelGET"
+      parameters:
+      - name: "model_id"
+        in: "path"
+        description: "Id of the model to retrieve."
+        required: true
+        type: "string"
+        format: "double"
+      responses:
+        200:
+          description: "The target model."
+          schema:
+            $ref: "#/definitions/Model"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Model"
+  /model/schema:
+    get:
+      tags:
+      - "Schema"
+      summary: "Schema of all data variables, state variables and error state variables\
+        \ that a specific mechatronic component model can provide."
+      description: "Schema of all data variables, state variables and error state\
+        \ variables that a specific mechatronic component model can provide.\nThe\
+        \ response includes a combined schema of all data variable, state variable\
+        \ and error state variable provided by a specific model.\n"
+      operationId: "modelSchemaGET"
+      parameters:
+      - name: "model_id"
+        in: "query"
+        description: "Id of the model whose data variables, state variables and error\
+          \ state variables will be retrieved in the future."
+        required: true
+        type: "string"
+        format: "double"
+      responses:
+        200:
+          description: "Schema of all data variables, state variables and error state\
+            \ variables of a specific model."
+          schema:
+            $ref: "#/definitions/Schema"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Schema"
+  /model/socket:
+    put:
+      tags:
+      - "Model Websocket"
+      summary: "Create a new websocket endpoint, subcribe to all data variables, state\
+        \ variables and error state variables of the specified model and return every\
+        \ value changes vis this websocket."
+      operationId: "modelSocketPUT"
+      parameters:
+      - name: "model_id"
+        in: "query"
+        description: "Id of the model whose data variables, state variables and error\
+          \ state variables will be retrieved."
+        required: true
+        type: "string"
+        format: "double"
+      responses:
+        200:
+          description: "WebSocket endpoint Object."
+          schema:
+            $ref: "#/definitions/WebSocketEndpoint"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "ModelWebsocket"
+  /heartbeat:
+    put:
+      tags:
+      - "Heartbeat"
+      summary: "Send a heartbeat signal."
+      operationId: "heartbeatPUT"
+      parameters:
+      - name: "ip"
+        in: "query"
+        description: "IP address of the sender."
+        required: true
+        type: "string"
+        format: "string"
+      responses:
+        200:
+          description: "Heartbeat object as a response to the request."
+          schema:
+            $ref: "#/definitions/Heartbeat"
+        default:
+          description: "Unexpected error"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Heartbeat"
+definitions:
+  Model:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Unique identifier representing a specific model of a mechatronic\
+          \ component."
+      name:
+        type: "string"
+        description: "Name of a mechtonic component"
+      display_name:
+        type: "string"
+        description: "Display name of a model."
+      type:
+        type: "string"
+        description: "Type of the mechatronic Component nach DAISY Type system."
+      write_mask:
+        type: "number"
+        description: "Lower bound of the estimated price."
+  ValueSchema:
+    type: "object"
+    properties:
+      show:
+        type: "boolean"
+        description: "Specify if the value"
+      text:
+        type: "string"
+        description: "Display name of the data variable."
+      type:
+        type: "string"
+        description: "Type of the value. Possible value are 'number' or 'string'."
+      path:
+        type: "string"
+        description: "Path of the value datapoint from the root of a mechatronic component\
+          \ server."
+  StateSchema:
+    type: "object"
+    properties:
+      show:
+        type: "boolean"
+        description: "Specify if the value"
+      text:
+        type: "string"
+        description: "Display name of the state variable."
+      path:
+        type: "string"
+        description: "Path of the value datapoint from the root of a mechatronic component\
+          \ server."
+  ErrorSchema:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"
+      show:
+        type: "boolean"
+        description: "Specify if the value"
+  Schema:
+    type: "object"
+    properties:
+      Values:
+        type: "array"
+        description: "List of all variable values founded in the targeted machine."
+        items:
+          $ref: "#/definitions/ValueSchema"
+      States:
+        type: "array"
+        description: "List of all variable state founded in the targeted machine."
+        items:
+          $ref: "#/definitions/StateSchema"
+      Errors:
+        type: "array"
+        description: "List of all error states variables founded in the targeted machine."
+        items:
+          $ref: "#/definitions/ErrorSchema"
+  WebSocketEndpoint:
+    type: "object"
+    properties:
+      url:
+        type: "string"
+  Heartbeat:
+    type: "object"
+    properties:
+      time:
+        type: "integer"
+        format: "uint32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+  Error:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"
+      fields:
+        type: "string"
