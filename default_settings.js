@@ -384,28 +384,28 @@ module.exports = {
         //         }
         //     ]
         // },
-        // WSSStreamer_example_config: {
-        //     id: "WSStreamer1", // Unique ID of the module in the global configuration
-        //     name: "WSStreamer1", // Name of the module instance.
-        //     type: "WSStreamer", // Type of the module, should always be "WSStreamer" in order to use this module
-        //     modulesetting: {
-        //         port: 8080 // local port of the websocket server.
-        //     },
-        //     inputs_variables: [ // The output variables specify the variables to generate
-        //         {
-        //             name: "P1", // Variable Name
-        //             datatype: "real", // Type of the data to read: "real", "int", "byte"
-        //             si_unit: "V", // Unit of the data variable. It is optional
-        //             default: 0.0 // Default value
-        //         },
-        //         {
-        //             name: "P2",
-        //             datatype: "real",
-        //             si_unit: "V",
-        //             default: 0.0
-        //         }
-        //     ]
-        // },
+        WSSStreamer_example_config: {
+            id: "WSStreamer1", // Unique ID of the module in the global configuration
+            name: "WSStreamer1", // Name of the module instance.
+            type: "WSStreamer", // Type of the module, should always be "WSStreamer" in order to use this module
+            modulesetting: {
+                port: 8080 // local port of the websocket server.
+            },
+            inputs_variables: [ // The output variables specify the variables to generate
+                {
+                    name: "P1", // Variable Name
+                    datatype: "real", // Type of the data to read: "real", "int", "byte"
+                    si_unit: "V", // Unit of the data variable. It is optional
+                    default: 0.0 // Default value
+                },
+                {
+                    name: "P2",
+                    datatype: "real",
+                    si_unit: "V",
+                    default: 0.0
+                }
+            ]
+        },
 
         opcua0: {
             id: "OPCUAServerStreamer_1",
