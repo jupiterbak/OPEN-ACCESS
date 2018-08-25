@@ -65,7 +65,7 @@
 var when = require('when');
 var SNAP7Lib = require("node-snap7");
 var backoff = require('backoff');
-
+var events = require('events');
 
 var SNAP7ModuleInterface = function() {
     this.client = new SNAP7Lib.S7Client();
@@ -90,7 +90,7 @@ SNAP7ModuleInterface.prototype.init = function(_app, _settings) {
     self.fibonacciBackoff = backoff.fibonacci({
         randomisationFactor: 0,
         initialDelay: 1000,
-        maxDelay: 30000
+        maxDelay: 10000
     });
     //self.fibonacciBackoff.failAfter(10);
 
@@ -100,6 +100,8 @@ SNAP7ModuleInterface.prototype.init = function(_app, _settings) {
 
 SNAP7ModuleInterface.prototype.start = function() {
     var self = this;
+    
+    self.eventEmitter = new events.EventEmitter();
 
     self.fibonacciBackoff.on('backoff', function(number, delay) {
         self.app.engine.log.info("Southbound[" + self.settings.name + "] will start connection in : " + delay + 'ms - attempt ' + number + '.');
@@ -118,21 +120,52 @@ SNAP7ModuleInterface.prototype.start = function() {
                 }
                 self.fibonacciBackoff.reset();
                 self.generator = setInterval(function() {
-                    self.settings.outputs_variables.forEach(function(el) {
-                        self.client.ReadArea(el.area, el.dbNumber, el.start, el.amount, el.wordLen, function(err, res) {
-                            if (err) {
-                                self.app.engine.log.info("Southbound[" + self.settings.name + "] Exception while reading Variable :" + JSON.stringify(err));
-                            }
-                            self.app.inputbus.emit(el.name, res); // Forward the serialized bytestream
-                            // TODO: implements a deserialisation mechanism
-                        });
-                    });
+                    if(self.client.Connected()=== true){
+                        self.settings.outputs_variables.forEach(function(el) {
+                            if(self.client.Connected()===true){
+                                res = self.client.ReadArea(el.area, el.dbNumber, el.start, el.amount, el.wordLen);
+                                if (res) {
+                                    var value = el.default;
+                                    if(res){
+                                        var buffer = new Buffer(res.buffer);
+                                        if(el.datatype === "byte" && buffer.length > 0){
+                                            value = buffer.readUInt8(0);
+                                            self.app.inputbus.emit(el.name, value); // Forward the serialized bytestream
+                                        } else if(el.datatype === "int" && buffer.length >= 4){
+                                            value = buffer.readInt32BE(0);
+                                            self.app.inputbus.emit(el.name, value); // Forward the serialized bytestream
+                                        }else if(el.datatype === "real" && buffer.length >= 4){
+                                            value = buffer.readFloatBE(0);
+                                            self.app.inputbus.emit(el.name, value); // Forward the serialized bytestream
+                                        }else{
+                                            value = buffer;
+                                            self.app.inputbus.emit(el.name, value); // Forward the serialized bytestream
+                                        }
+                                    // TODO: implements a deserialisation mechanism
+                                    }    
+                                }  else{
+                                    self.app.engine.log.info("Southbound[" + self.settings.name + "] Exception while reading Variable. ");
+                                    self.eventEmitter.emit('disconnected');
+                                }   
+                            }                             
+                        });                       
+                    }
                 }, self.settings.modulesetting.interval);
             });
+            
         } catch (err) {
+            self.fibonacciBackoff.reset();
             self.fibonacciBackoff.backoff();
         }
     });
+
+    self.eventEmitter.on('disconnected', function name(err) {
+        clearInterval(self.generator);
+        self.client.Disconnect();
+        self.fibonacciBackoff.reset();
+        self.fibonacciBackoff.backoff();
+    });
+
     self.fibonacciBackoff.backoff();
     self.app.engine.log.info("Southbound[" + self.settings.name + "] started successfully!");
     return when.resolve();

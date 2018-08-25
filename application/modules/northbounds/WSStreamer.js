@@ -91,7 +91,7 @@ WSSStreamerInterface.prototype.start = function() {
 
     self.settings.inputs_variables.forEach(function(el) {
         self.app.outputbus.addListener(el.name, function(arg) {
-            //self.app.engine.log.info("### WSS --> "+ el.name +" : " + arg);
+            // self.app.engine.log.info("### WSS --> "+ el.name +" : " + arg);
             self.wss.broadcast(JSON.stringify({
                 value: arg,
                 id: el.name
