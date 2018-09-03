@@ -82,7 +82,7 @@ function start(app) {
     }
 
     // Load all the Containers and connect it
-    log.info("engine started successfully.");
+    log.info("Engine started successfully.");
 }
 
 function reportMetrics() {
@@ -112,7 +112,7 @@ var engine = module.exports = {
     stop: function(app) {
         DAGS.stopDAGs(app);
         started = false;
-        console.log("engine stopped successfully.");
+        log.info("engine stopped successfully.");
     },
     version: getVersion,
     log: log,
@@ -122,7 +122,7 @@ var engine = module.exports = {
         return started;
     },
     newOutputValue: function() {
-        console.log('Engine - New Ouput Value is:', arg1);
+        log.info('Engine - New Ouput Value is:', arg1);
     },
     userSettings: _userSettings,
     getDAGS: function() { return DAGS }

@@ -102,12 +102,12 @@ server = http.createServer(function(req, res) { app(req, res); });
 
 // initialize the plattform
 
-try {
-    OPEN_ACCESS.init(server, settings);
-} catch (err) {
-    console.log("Failed to start OPEN ACCESS: " + err);
-    process.exit(1);
-}
+// try {
+OPEN_ACCESS.init(server, settings);
+// } catch (err) {
+//     console.log("Failed to start OPEN ACCESS: " + err);
+//     process.exit(1);
+// }
 
 // Start the plattform
 OPEN_ACCESS.start().then(function() {

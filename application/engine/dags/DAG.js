@@ -70,7 +70,7 @@ function DAG(settings, engine) {
     };
 
     this.update = function(_flow, engine) {
-
+        // TODO: Jupiter
     };
 
     this.init = function(flow_config) {
@@ -91,23 +91,29 @@ function DAG(settings, engine) {
             if (obj != null) {
                 self.activeContainers[obj.id] = obj;
                 // get input_variable data streams
-                obj.inputsstreams.forEach(function(stream) {
+                var keys = Object.keys(obj.inputsstreams);
+                for (var i = 0; i < keys.length; i++) {
+                    var stream = obj.inputsstreams[keys[i]];
                     if (stream.inputsetting.type === "base_input") {
-                        self.basic_inputs[stream.inputsetting.id] = stream;
+                        self.basic_inputs[stream.inputsetting.variable] = self.basic_inputs[stream.inputsetting.variable] || [];
+                        self.basic_inputs[stream.inputsetting.variable].push(stream);
                     } else {
                         self.input_variables[stream.inputsetting.variable] = self.input_variables[stream.inputsetting.variable] || [];
                         self.input_variables[stream.inputsetting.variable].push(stream);
                     }
-                });
+                }
 
-                obj.outputsstreams.forEach(function(stream) {
+                var keys2 = Object.keys(obj.outputsstreams);
+                for (var j = 0; j < keys2.length; j++) {
+                    var stream = obj.outputsstreams[keys2[i]];
                     if (stream.outsetting.type === "base_output") {
-                        self.basic_outputs[stream.outsetting.id] = stream;
+                        self.basic_outputs[stream.outsetting.variable] = self.basic_outputs[stream.outsetting.variable] || []
+                        self.basic_outputs[stream.outsetting.variable].push(stream);
                     } else {
                         self.output_variables[stream.outsetting.variable] = self.input_variables[stream.outsetting.variable] || [];
                         self.output_variables[stream.outsetting.variable].push(stream);
                     }
-                });
+                }
             }
         }
     };
@@ -123,61 +129,74 @@ function DAG(settings, engine) {
         }
 
 
-        // Connect the inputs to the outputs
+        // Connect the inputs variable to the base input or output variables
         Object.keys(self.input_variables).forEach(function(keyi) {
             var streami_s = self.input_variables[keyi];
 
-
+            // Connect to the output variables
             var output_list = self.output_variables[keyi];
             if (output_list) {
                 streami_s.forEach(function(s) {
                     output_list.forEach(function(streamo_) {
                         streamo_.on('data', function(arg) {
                             s.write(arg);
-                            //streami_.emit(streamo_.outsetting.variable, arg);
                         });
 
                     });
                 });
             }
 
-            Object.keys(self.basic_outputs).forEach(function(keyo) {
-                if (self.basic_outputs[keyo].outsetting.variable === keyi) {
-                    self.basic_outputs[keyo].on('data', function(arg) {
-                        streami_s.forEach(function(s) {
-                            s.write(arg);
+            // Connect to the base input
+            var base_input_list = self.basic_inputs[keyi];
+            if (base_input_list) {
+                base_input_list.forEach(function(b_input) {
+                    if (b_input.inputsetting.variable === keyi) {
+                        b_input.on('data', function(arg) {
+                            streami_s.forEach(function(s) {
+                                s.write(arg);
+                            });
                         });
-                    });
-                }
-            });
+                    }
+                });
+            }
 
-
-            Object.keys(self.basic_inputs).forEach(function(keyii) {
-                if (self.basic_inputs[keyii].inputsetting.variable === keyi) {
-                    self.basic_inputs[keyii].on('data', function(arg) {
-                        streami_s.forEach(function(s) {
-                            s.write(arg);
+            // Connect to the base output 
+            var base_output_list = self.basic_outputs[keyi];
+            if (base_output_list) {
+                base_output_list.forEach(function(b_output) {
+                    if (b_output.outsetting.variable === keyi) {
+                        b_output.on('data', function(arg) {
+                            streami_s.forEach(function(s) {
+                                s.write(arg);
+                            });
                         });
-                    });
-                }
-            });
-        });
-
-
-
-        // Connect the basic output to the output event bus
-        Object.keys(this.basic_outputs).forEach(function(key) {
-            var streami = self.basic_outputs[key];
-            streami.on('data', function(arg) {
-                app.outputbus.emit(streami.outsetting.variable, arg);
-            });
+                    }
+                });
+            }
         });
 
         // Connect the basic input to the input event bus
         Object.keys(this.basic_inputs).forEach(function(key) {
-            app.inputbus.addListener(self.basic_inputs[key].inputsetting.variable, function(val) {
-                self.basic_inputs[key].write(val);
-            });
+            var binputlist = self.basic_inputs[key];
+            if (binputlist) {
+                app.inputbus.addListener(self.basic_inputs[key].inputsetting.variable, function(val) {
+                    binputlist.forEach(element => {
+                        element.write(val);
+                    });
+                });
+            }
+        });
+
+        // Connect the basic output to the output event bus
+        Object.keys(this.basic_outputs).forEach(function(key) {
+            var boutputlist = self.basic_outputs[key];
+            if (boutputlist) {
+                boutputlist.forEach(streami => {
+                    streami.on('data', function(arg) {
+                        app.outputbus.emit(streami.outsetting.variable, arg);
+                    });
+                });
+            }
         });
     };
 
@@ -185,19 +204,28 @@ function DAG(settings, engine) {
         var self = this;
         self.started = false;
         Object.keys(this.basic_inputs).forEach(function(key) {
-            app.inputbus.removeListener(self.basic_inputs[key].inputsetting.variable, function(val) {
-                self.basic_inputs[key].write(val);
-            });
+            var binputlist = self.basic_inputs[key];
+            if (binputlist) {
+                app.inputbus.removeListener(self.basic_inputs[key].inputsetting.variable, function(val) {
+                    binputlist.forEach(element => {
+                        element.write(val);
+                    });
+                });
+            }
         });
 
         Object.keys(this.basic_outputs).forEach(function(key) {
-            var streami = self.basic_outputs[key];
-            streami.on('data', function(arg) {
-                //app.outputbus.emit(streami.outsetting.variable, arg);
-            });
+            var boutputlist = self.basic_outputs[key];
+            if (boutputlist) {
+                boutputlist.forEach(streami => {
+                    streami.on('data', function(arg) {
+                        //app.outputbus.emit(streami.outsetting.variable, arg);
+                    });
+                });
+            }
         });
 
-        // start all containers
+        // stop all containers
         var keys = Object.keys(this.activeContainers);
         for (var i = 0; i < keys.length; i++) {
             var container = this.activeContainers[keys[i]];
