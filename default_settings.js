@@ -149,101 +149,101 @@ module.exports = {
     // Configure the logging output
     southbounds: {
         // Only dummy is currently supported
-        // dummy: {
-        //     id: "67435124",
-        //     name: "S_Dummy",
-        //     type: "dummyClient",
-        //     level: "info",
-        //     modulesetting: { interval: 1000 },
-        //     outputs_variables: [{
-        //             name: "I",
-        //             datatype: "real",
-        //             si_unit: "A",
-        //             default: 0.0
-        //         },
-        //         {
-        //             name: "U",
-        //             datatype: "real",
-        //             si_unit: "V",
-        //             default: 0.0
-        //         },
-        //         {
-        //             name: "t",
-        //             datatype: "real",
-        //             si_unit: "s",
-        //             default: 0.0
-        //         }
-        //     ],
-        //     system: false
-        // },
-        example_SNAP7_config: {
-            id: "SNAP7Client1", // Unique ID of the module in the global configuration
-            name: "SNAP7Client1", // Name of the module instance.
-            type: "SNAP7Client", // Type of the module, should always be "SNAP7Client" in order to use this module
-            modulesetting: {
-                ip: '192.168.0.1', // Remote IP-Address of the PLC server module
-                rack: 0, // PLC Rack number
-                slot: 1, // PLC Slot number
-                interval: 10, // Interval to pool the data in ms
-            },
-            outputs_variables: [ // The output variables specify how to interpret and map the data received
-                {
-                    name: "I_Bool_Enable", // Variable that will hold the serialized value comming from the PLC.
-                    datatype: "byte", // Type of the data to read: "real", "int", "byte"
-                    default: false,
-                    si_unit: "V", // Unit of the data variable. It is optional
-                    area: 0x83, // Area identifier (0x81 Process inputs, 0x82 Process outputs, 0x83	Merkers, 0x84 DB, 0x1C Counters,0x1D Timers)
-                    dbNumber: 1, // DB number if area = 0x84, otherwise ignored
-                    start: 18, // Offset to start
-                    amount: 1, // Amount of words to read
-                    wordLen: 0x02 // Word size (0x01 Bit (inside a word), 0x02 Byte (8 bit), 0x04	Word (16 bit), 0x06	Double Word (32 bit), 0x08	Real (32 bit float), 0x1C	Counter (16 bit), 0x1D	Timer (16 bit))
+        dummy: {
+            id: "67435124",
+            name: "S_Dummy",
+            type: "dummyClient",
+            level: "info",
+            modulesetting: { interval: 1000 },
+            outputs_variables: [{
+                    name: "I",
+                    datatype: "real",
+                    si_unit: "A",
+                    default: 0.0
                 },
                 {
-                    name: "I_Bool_Direction", // Variable that will hold the serialized value comming from the PLC.
-                    datatype: "byte", // Type of the data to read: "real", "int", "byte"
-                    default: false,
-                    si_unit: "V", // Unit of the data variable. It is optional
-                    area: 0x83, // Area identifier (0x81 Process inputs, 0x82 Process outputs, 0x83	Merkers, 0x84 DB, 0x1C Counters,0x1D Timers)
-                    dbNumber: 1, // DB number if area = 0x84, otherwise ignored
-                    start: 19, // Offset to start
-                    amount: 1, // Amount of words to read
-                    wordLen: 0x02 // Word size (0x01 Bit (inside a word), 0x02 Byte (8 bit), 0x04	Word (16 bit), 0x06	Double Word (32 bit), 0x08	Real (32 bit float), 0x1C	Counter (16 bit), 0x1D	Timer (16 bit))
+                    name: "U",
+                    datatype: "real",
+                    si_unit: "V",
+                    default: 0.0
                 },
                 {
-                    name: "Q_Bool_Run", // Variable that will hold the serialized value comming from the PLC.
-                    datatype: "byte", // Type of the data to read: "real", "int", "byte"
-                    default: false,
-                    si_unit: "V", // Unit of the data variable. It is optional
-                    area: 0x83, // Area identifier (0x81 Process inputs, 0x82 Process outputs, 0x83	Merkers, 0x84 DB, 0x1C Counters,0x1D Timers)
-                    dbNumber: 1, // DB number if area = 0x84, otherwise ignored
-                    start: 20, // Offset to start
-                    amount: 1, // Amount of words to read
-                    wordLen: 0x02 // Word size (0x01 Bit (inside a word), 0x02 Byte (8 bit), 0x04	Word (16 bit), 0x06	Double Word (32 bit), 0x08	Real (32 bit float), 0x1C	Counter (16 bit), 0x1D	Timer (16 bit))
-                },
-                {
-                    name: "Q_Real_Velocity", // Variable that will hold the serialized value comming from the PLC.
-                    datatype: "real", // Type of the data to read: "real", "int", "byte"
-                    default: 0.0,
-                    si_unit: "V", // Unit of the data variable. It is optional
-                    area: 0x83, // Area identifier (0x81 Process inputs, 0x82 Process outputs, 0x83	Merkers, 0x84 DB, 0x1C Counters,0x1D Timers)
-                    dbNumber: 1, // DB number if area = 0x84, otherwise ignored
-                    start: 8, // Offset to start
-                    amount: 1, // Amount of words to read
-                    wordLen: 0x08 // Word size (0x01 Bit (inside a word), 0x02 Byte (8 bit), 0x04	Word (16 bit), 0x06	Double Word (32 bit), 0x08	Real (32 bit float), 0x1C	Counter (16 bit), 0x1D	Timer (16 bit))
-                },
-                {
-                    name: "I_Target_Velocity", // Variable that will hold the serialized value comming from the PLC.
-                    datatype: "real", // Type of the data to read: "real", "int", "byte"
-                    default: 0.0,
-                    si_unit: "V", // Unit of the data variable. It is optional
-                    area: 0x83, // Area identifier (0x81 Process inputs, 0x82 Process outputs, 0x83	Merkers, 0x84 DB, 0x1C Counters,0x1D Timers)
-                    dbNumber: 1, // DB number if area = 0x84, otherwise ignored
-                    start: 12, // Offset to start
-                    amount: 1, // Amount of words to read
-                    wordLen: 0x08 // Word size (0x01 Bit (inside a word), 0x02 Byte (8 bit), 0x04	Word (16 bit), 0x06	Double Word (32 bit), 0x08	Real (32 bit float), 0x1C	Counter (16 bit), 0x1D	Timer (16 bit))
+                    name: "t",
+                    datatype: "real",
+                    si_unit: "s",
+                    default: 0.0
                 }
-            ]
+            ],
+            system: false
         },
+        // example_SNAP7_config: {
+        //     id: "SNAP7Client1", // Unique ID of the module in the global configuration
+        //     name: "SNAP7Client1", // Name of the module instance.
+        //     type: "SNAP7Client", // Type of the module, should always be "SNAP7Client" in order to use this module
+        //     modulesetting: {
+        //         ip: '192.168.0.1', // Remote IP-Address of the PLC server module
+        //         rack: 0, // PLC Rack number
+        //         slot: 1, // PLC Slot number
+        //         interval: 10, // Interval to pool the data in ms
+        //     },
+        //     outputs_variables: [ // The output variables specify how to interpret and map the data received
+        //         {
+        //             name: "I_Bool_Enable", // Variable that will hold the serialized value comming from the PLC.
+        //             datatype: "byte", // Type of the data to read: "real", "int", "byte"
+        //             default: false,
+        //             si_unit: "V", // Unit of the data variable. It is optional
+        //             area: 0x83, // Area identifier (0x81 Process inputs, 0x82 Process outputs, 0x83	Merkers, 0x84 DB, 0x1C Counters,0x1D Timers)
+        //             dbNumber: 1, // DB number if area = 0x84, otherwise ignored
+        //             start: 18, // Offset to start
+        //             amount: 1, // Amount of words to read
+        //             wordLen: 0x02 // Word size (0x01 Bit (inside a word), 0x02 Byte (8 bit), 0x04	Word (16 bit), 0x06	Double Word (32 bit), 0x08	Real (32 bit float), 0x1C	Counter (16 bit), 0x1D	Timer (16 bit))
+        //         },
+        //         {
+        //             name: "I_Bool_Direction", // Variable that will hold the serialized value comming from the PLC.
+        //             datatype: "byte", // Type of the data to read: "real", "int", "byte"
+        //             default: false,
+        //             si_unit: "V", // Unit of the data variable. It is optional
+        //             area: 0x83, // Area identifier (0x81 Process inputs, 0x82 Process outputs, 0x83	Merkers, 0x84 DB, 0x1C Counters,0x1D Timers)
+        //             dbNumber: 1, // DB number if area = 0x84, otherwise ignored
+        //             start: 19, // Offset to start
+        //             amount: 1, // Amount of words to read
+        //             wordLen: 0x02 // Word size (0x01 Bit (inside a word), 0x02 Byte (8 bit), 0x04	Word (16 bit), 0x06	Double Word (32 bit), 0x08	Real (32 bit float), 0x1C	Counter (16 bit), 0x1D	Timer (16 bit))
+        //         },
+        //         {
+        //             name: "Q_Bool_Run", // Variable that will hold the serialized value comming from the PLC.
+        //             datatype: "byte", // Type of the data to read: "real", "int", "byte"
+        //             default: false,
+        //             si_unit: "V", // Unit of the data variable. It is optional
+        //             area: 0x83, // Area identifier (0x81 Process inputs, 0x82 Process outputs, 0x83	Merkers, 0x84 DB, 0x1C Counters,0x1D Timers)
+        //             dbNumber: 1, // DB number if area = 0x84, otherwise ignored
+        //             start: 20, // Offset to start
+        //             amount: 1, // Amount of words to read
+        //             wordLen: 0x02 // Word size (0x01 Bit (inside a word), 0x02 Byte (8 bit), 0x04	Word (16 bit), 0x06	Double Word (32 bit), 0x08	Real (32 bit float), 0x1C	Counter (16 bit), 0x1D	Timer (16 bit))
+        //         },
+        //         {
+        //             name: "Q_Real_Velocity", // Variable that will hold the serialized value comming from the PLC.
+        //             datatype: "real", // Type of the data to read: "real", "int", "byte"
+        //             default: 0.0,
+        //             si_unit: "V", // Unit of the data variable. It is optional
+        //             area: 0x83, // Area identifier (0x81 Process inputs, 0x82 Process outputs, 0x83	Merkers, 0x84 DB, 0x1C Counters,0x1D Timers)
+        //             dbNumber: 1, // DB number if area = 0x84, otherwise ignored
+        //             start: 8, // Offset to start
+        //             amount: 1, // Amount of words to read
+        //             wordLen: 0x08 // Word size (0x01 Bit (inside a word), 0x02 Byte (8 bit), 0x04	Word (16 bit), 0x06	Double Word (32 bit), 0x08	Real (32 bit float), 0x1C	Counter (16 bit), 0x1D	Timer (16 bit))
+        //         },
+        //         {
+        //             name: "I_Target_Velocity", // Variable that will hold the serialized value comming from the PLC.
+        //             datatype: "real", // Type of the data to read: "real", "int", "byte"
+        //             default: 0.0,
+        //             si_unit: "V", // Unit of the data variable. It is optional
+        //             area: 0x83, // Area identifier (0x81 Process inputs, 0x82 Process outputs, 0x83	Merkers, 0x84 DB, 0x1C Counters,0x1D Timers)
+        //             dbNumber: 1, // DB number if area = 0x84, otherwise ignored
+        //             start: 12, // Offset to start
+        //             amount: 1, // Amount of words to read
+        //             wordLen: 0x08 // Word size (0x01 Bit (inside a word), 0x02 Byte (8 bit), 0x04	Word (16 bit), 0x06	Double Word (32 bit), 0x08	Real (32 bit float), 0x1C	Counter (16 bit), 0x1D	Timer (16 bit))
+        //         }
+        //     ]
+        // },
         // example_opcua_client_config: {
         //     id: "OPCUAClient1", // Unique ID of the module in the global configuration
         //     name: "OPCUAClient1", // Name of the module instance.
@@ -450,7 +450,7 @@ module.exports = {
                     datatype: "byte", // Type of the data to read: "real", "int", "byte"
                     default: false,
                     si_unit: "V", // Unit of the data variable. It is optional
-                    },
+                },
                 {
                     name: "Q_Bool_Run", // Variable that will hold the serialized value comming from the PLC.
                     datatype: "byte", // Type of the data to read: "real", "int", "byte"
@@ -563,7 +563,7 @@ module.exports = {
                         name: "MyContainer",
                         type: "MULT2",
                         inputs: [{
-                                name: "U",
+                                name: "a",
                                 label: "U(V)",
                                 datatype: "real",
                                 si_unit: "V",
@@ -572,7 +572,7 @@ module.exports = {
                                 variable: "U"
                             },
                             {
-                                name: "I",
+                                name: "b",
                                 label: "I(A)",
                                 datatype: "real",
                                 si_unit: "A",
@@ -582,7 +582,7 @@ module.exports = {
                             }
                         ],
                         outputs: [{
-                            name: "P1",
+                            name: "c",
                             label: "P1(W)",
                             datatype: "real",
                             si_unit: "W",
@@ -596,16 +596,16 @@ module.exports = {
                         name: "MyOtherContainer",
                         type: "ADD2",
                         inputs: [{
-                                name: "OPCVar",
+                                name: "a",
                                 label: "OPCVar",
                                 datatype: "real",
                                 si_unit: "V",
                                 default: 0.0,
                                 type: "base_input",
-                                variable: "OPCVar"
+                                variable: "I"
                             },
                             {
-                                name: "t",
+                                name: "b",
                                 label: "t",
                                 datatype: "real",
                                 si_unit: "",
@@ -615,7 +615,7 @@ module.exports = {
                             }
                         ],
                         outputs: [{
-                            name: "P2",
+                            name: "c",
                             label: "P2(W)",
                             datatype: "real",
                             si_unit: "W",
@@ -624,121 +624,121 @@ module.exports = {
                             variable: "P2"
                         }]
                     },
-                    I_Bool_Enable_FORWARD: {
-                        id: "I_Bool_Enable_FORWARD",
-                        name: "I_Bool_Enable_FORWARD",
-                        type: "FORWARD",
-                        inputs: [{
-                            name: "I_Bool_Enable",
-                            label: "",
-                            datatype: "byte",
-                            si_unit: "-",
-                            default: {},
-                            type: "base_input",
-                            variable: "I_Bool_Enable"
-                        }],
-                        outputs: [{
-                            name: "I_Bool_Enable_FORWARD_OUTPUT",
-                            label: "",
-                            datatype: "byte",
-                            si_unit: "-",
-                            default: {},
-                            type: "base_output",
-                            variable: "I_Bool_Enable"
-                        }]
-                    },
-                    I_Bool_Direction_FORWARD: {
-                        id: "I_Bool_Direction_FORWARD",
-                        name: "I_Bool_Direction_FORWARD",
-                        type: "FORWARD",
-                        inputs: [{
-                            name: "I_Bool_Direction",
-                            label: "",
-                            datatype: "byte",
-                            si_unit: "-",
-                            default: {},
-                            type: "base_input",
-                            variable: "I_Bool_Direction"
-                        }],
-                        outputs: [{
-                            name: "I_Bool_Direction_FORWARD_OUTPUT",
-                            label: "",
-                            datatype: "byte",
-                            si_unit: "-",
-                            default: {},
-                            type: "base_output",
-                            variable: "I_Bool_Direction"
-                        }]
-                    },
-                    Q_Bool_Run_FORWARD: {
-                        id: "Q_Bool_Run_FORWARD",
-                        name: "Q_Bool_Run_FORWARD",
-                        type: "FORWARD",
-                        inputs: [{
-                            name: "Q_Bool_Run",
-                            label: "",
-                            datatype: "byte",
-                            si_unit: "-",
-                            default: {},
-                            type: "base_input",
-                            variable: "Q_Bool_Run"
-                        }],
-                        outputs: [{
-                            name: "Q_Bool_Run_FORWARD_OUTPUT",
-                            label: "",
-                            datatype: "byte",
-                            si_unit: "-",
-                            default: {},
-                            type: "base_output",
-                            variable: "Q_Bool_Run"
-                        }]
-                    },            
-                    Q_Real_Velocity_FORWARD: {
-                        id: "Q_Real_Velocity_FORWARD",
-                        name: "Q_Real_Velocity_FORWARD",
-                        type: "FORWARD",
-                        inputs: [{
-                            name: "Q_Real_Velocity",
-                            label: "",
-                            datatype: "byte",
-                            si_unit: "-",
-                            default: {},
-                            type: "base_input",
-                            variable: "Q_Real_Velocity"
-                        }],
-                        outputs: [{
-                            name: "Q_Real_Velocityn_FORWARD_OUTPUT",
-                            label: "",
-                            datatype: "byte",
-                            si_unit: "-",
-                            default: {},
-                            type: "base_output",
-                            variable: "Q_Real_Velocity"
-                        }]
-                    },            
-                    I_Target_Velocity_FORWARD: {
-                        id: "I_Target_Velocity_FORWARD",
-                        name: "I_Target_Velocity_FORWARD",
-                        type: "FORWARD",
-                        inputs: [{
-                            name: "I_Target_Velocity",
-                            label: "",
-                            datatype: "byte",
-                            si_unit: "-",
-                            default: {},
-                            type: "base_input",
-                            variable: "I_Target_Velocity"
-                        }],
-                        outputs: [{
-                            name: "I_Target_Velocity_FORWARD_OUTPUT",
-                            label: "",
-                            datatype: "byte",
-                            si_unit: "-",
-                            default: {},
-                            type: "base_output",
-                            variable: "I_Target_Velocity"
-                        }]
-                    }
+                    // I_Bool_Enable_FORWARD: {
+                    //     id: "I_Bool_Enable_FORWARD",
+                    //     name: "I_Bool_Enable_FORWARD",
+                    //     type: "FORWARD",
+                    //     inputs: [{
+                    //         name: "I_Bool_Enable",
+                    //         label: "",
+                    //         datatype: "byte",
+                    //         si_unit: "-",
+                    //         default: {},
+                    //         type: "base_input",
+                    //         variable: "I_Bool_Enable"
+                    //     }],
+                    //     outputs: [{
+                    //         name: "I_Bool_Enable_FORWARD_OUTPUT",
+                    //         label: "",
+                    //         datatype: "byte",
+                    //         si_unit: "-",
+                    //         default: {},
+                    //         type: "base_output",
+                    //         variable: "I_Bool_Enable"
+                    //     }]
+                    // },
+                    // I_Bool_Direction_FORWARD: {
+                    //     id: "I_Bool_Direction_FORWARD",
+                    //     name: "I_Bool_Direction_FORWARD",
+                    //     type: "FORWARD",
+                    //     inputs: [{
+                    //         name: "I_Bool_Direction",
+                    //         label: "",
+                    //         datatype: "byte",
+                    //         si_unit: "-",
+                    //         default: {},
+                    //         type: "base_input",
+                    //         variable: "I_Bool_Direction"
+                    //     }],
+                    //     outputs: [{
+                    //         name: "I_Bool_Direction_FORWARD_OUTPUT",
+                    //         label: "",
+                    //         datatype: "byte",
+                    //         si_unit: "-",
+                    //         default: {},
+                    //         type: "base_output",
+                    //         variable: "I_Bool_Direction"
+                    //     }]
+                    // },
+                    // Q_Bool_Run_FORWARD: {
+                    //     id: "Q_Bool_Run_FORWARD",
+                    //     name: "Q_Bool_Run_FORWARD",
+                    //     type: "FORWARD",
+                    //     inputs: [{
+                    //         name: "Q_Bool_Run",
+                    //         label: "",
+                    //         datatype: "byte",
+                    //         si_unit: "-",
+                    //         default: {},
+                    //         type: "base_input",
+                    //         variable: "Q_Bool_Run"
+                    //     }],
+                    //     outputs: [{
+                    //         name: "Q_Bool_Run_FORWARD_OUTPUT",
+                    //         label: "",
+                    //         datatype: "byte",
+                    //         si_unit: "-",
+                    //         default: {},
+                    //         type: "base_output",
+                    //         variable: "Q_Bool_Run"
+                    //     }]
+                    // },
+                    // Q_Real_Velocity_FORWARD: {
+                    //     id: "Q_Real_Velocity_FORWARD",
+                    //     name: "Q_Real_Velocity_FORWARD",
+                    //     type: "FORWARD",
+                    //     inputs: [{
+                    //         name: "Q_Real_Velocity",
+                    //         label: "",
+                    //         datatype: "byte",
+                    //         si_unit: "-",
+                    //         default: {},
+                    //         type: "base_input",
+                    //         variable: "Q_Real_Velocity"
+                    //     }],
+                    //     outputs: [{
+                    //         name: "Q_Real_Velocityn_FORWARD_OUTPUT",
+                    //         label: "",
+                    //         datatype: "byte",
+                    //         si_unit: "-",
+                    //         default: {},
+                    //         type: "base_output",
+                    //         variable: "Q_Real_Velocity"
+                    //     }]
+                    // },
+                    // I_Target_Velocity_FORWARD: {
+                    //     id: "I_Target_Velocity_FORWARD",
+                    //     name: "I_Target_Velocity_FORWARD",
+                    //     type: "FORWARD",
+                    //     inputs: [{
+                    //         name: "I_Target_Velocity",
+                    //         label: "",
+                    //         datatype: "byte",
+                    //         si_unit: "-",
+                    //         default: {},
+                    //         type: "base_input",
+                    //         variable: "I_Target_Velocity"
+                    //     }],
+                    //     outputs: [{
+                    //         name: "I_Target_Velocity_FORWARD_OUTPUT",
+                    //         label: "",
+                    //         datatype: "byte",
+                    //         si_unit: "-",
+                    //         default: {},
+                    //         type: "base_output",
+                    //         variable: "I_Target_Velocity"
+                    //     }]
+                    // }
                 }
             }
         }

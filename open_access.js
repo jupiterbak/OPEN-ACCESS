@@ -50,11 +50,23 @@ var userSettingsFile = path.join(userDir, 'settings_' + require('os').hostname()
 var userSettingsFileJson = path.join(userDir, 'settings_' + require('os').hostname() + '.json');
 
 if (fs.existsSync(userSettingsFileJson)) {
-    settings = JSON.parse(fs.readFileSync(userSettingsFileJson, 'utf8'));
-    settings.settingsFile = userSettingsFileJson;
+    try {
+        settings = JSON.parse(fs.readFileSync(userSettingsFileJson, 'utf8'));
+        settings.settingsFile = userSettingsFileJson;
+    } catch (err) {
+        console.log("[OPEN ACCESS] JSON Settings file: " + userSettingsFileJson + " is not well formatted. Please delete it.");
+        console.log('[OPEN ACCESS] is on exit with code: ' + 1);
+        process.exit(1);
+    }
 } else if (fs.existsSync(userSettingsFile)) {
-    settings = require(userSettingsFile);
-    settings.settingsFile = userSettingsFile;
+    try {
+        settings = require(userSettingsFile);
+        settings.settingsFile = userSettingsFile;
+    } catch (err) {
+        console.log("[OPEN ACCESS] Settings file: " + userSettingsFile + " is not well formatted. Please delete it.");
+        console.log('[OPEN ACCESS] is on exit with code: ' + 1);
+        process.exit(0);
+    }
 } else {
     var defaultSettings = path.join(__dirname, "default_settings.js");
     var settingsStat = fs.statSync(defaultSettings);
@@ -91,7 +103,7 @@ try {
     } else {
         console.log(err);
     }
-    process.exit();
+    process.exit(1);
 }
 
 
@@ -102,12 +114,13 @@ server = http.createServer(function(req, res) { app(req, res); });
 
 // initialize the plattform
 
-// try {
-OPEN_ACCESS.init(server, settings);
-// } catch (err) {
-//     console.log("Failed to start OPEN ACCESS: " + err);
-//     process.exit(1);
-// }
+try {
+    OPEN_ACCESS.init(server, settings);
+} catch (err) {
+    console.log("[OPEN ACCESS] Failed to start OPEN ACCESS: " + err);
+    console.log('[OPEN ACCESS] is on exit with code: ' + 1);
+    process.exit(1);
+}
 
 // Start the plattform
 OPEN_ACCESS.start().then(function() {
@@ -115,18 +128,23 @@ OPEN_ACCESS.start().then(function() {
 
 }).otherwise(function(err) {
     console.log("server.failed-to-start" + err);
+    console.log('[OPEN ACCESS] is on exit with code: ' + 1);
     process.exit(1);
 });
 
-
-
 process.on('uncaughtException', function(err) {
     console.log('[OPEN ACCESS] Uncaught Exception:' + err.stack);
+    console.log('[OPEN ACCESS] is on exit with code: ' + 1);
     process.exit(1);
 });
 
 // Stop the platform if the user request it
 process.on('SIGINT', function() {
     OPEN_ACCESS.stop();
+    console.log('[OPEN ACCESS] is on exit with code: ' + 0);
     process.exit(0);
+});
+
+process.on('exit', (code) => {
+    console.log('[OPEN ACCESS] is on exit with code: ' + code);
 });

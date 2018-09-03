@@ -78,7 +78,7 @@ Container.prototype.init = function(settings) {
     this.inputs_values = [];
     this.outputs_values = [];
     this.inputsstreams = {};
-    this.ioutputsstreams = {};
+    this.outputsstreams = {};
     this.started = false;
 
     this._closeCallbacks = [];
@@ -100,7 +100,7 @@ Container.prototype.updateWires = function(settings) {
     this.inputs_values = {};
     this.outputs_values = {};
     this.inputsstreams = {};
-    this.ioutputsstreams = {};
+    this.outputsstreams = {};
 
     // Compare configuration and settings
     if (this.inputs.length != this.inputs_configs.length || this.outputs.length != this.outputs_configs.length) {
@@ -196,8 +196,9 @@ Container.prototype.updateWires = function(settings) {
 
 Container.prototype.start = function() {
     var self = this;
-    this.started = true;
-    this.inputsstreams.forEach(function(stream_start) {
+    self.started = true;
+    Object.keys(self.inputsstreams).forEach(function(key) {
+        var stream_start = self.inputsstreams[key];
         stream_start.on('data', function(value) {
             self.inputs_values[stream_start.inputsetting.container_input.name] = value;
             // Computation start every time the data on the inputs change.
@@ -205,15 +206,14 @@ Container.prototype.start = function() {
             self.computeAll();
         });
     });
-};
-
+}
 Container.prototype.stop = function() {
     var self = this;
     this.started = false;
-    this.inputsstreams.forEach(function(stream) {
-        //self.log("Stop " + stream.inputsetting.name);
-        stream.on('data', function(value) {
-            //self.inputs_values[input.name] = value;
+    Object.keys(self.inputsstreams).forEach(function(key) {
+        var stream_start = self.inputsstreams[key];
+        stream_start.on('data', function(value) {
+            self.inputs_values[stream_start.inputsetting.container_input.name] = value;
             //self.computeAll();
         });
     });
@@ -231,7 +231,8 @@ Container.prototype.compute = function(input_datas, output_datas) {
 
 Container.prototype.updateOutputs = function(input_datas, output_datas) {
     var self = this;
-    this.outputsstreams.forEach(function(stream) {
+    Object.keys(self.outputsstreams).forEach(function(key) {
+        var stream = self.outputsstreams[key];
         stream.write(self.outputs_values[stream.outsetting.container_output.name]);
     });
 };

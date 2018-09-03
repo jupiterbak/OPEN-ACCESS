@@ -105,7 +105,7 @@ function DAG(settings, engine) {
 
                 var keys2 = Object.keys(obj.outputsstreams);
                 for (var j = 0; j < keys2.length; j++) {
-                    var stream = obj.outputsstreams[keys2[i]];
+                    var stream = obj.outputsstreams[keys2[j]];
                     if (stream.outsetting.type === "base_output") {
                         self.basic_outputs[stream.outsetting.variable] = self.basic_outputs[stream.outsetting.variable] || []
                         self.basic_outputs[stream.outsetting.variable].push(stream);
@@ -136,42 +136,51 @@ function DAG(settings, engine) {
             // Connect to the output variables
             var output_list = self.output_variables[keyi];
             if (output_list) {
-                streami_s.forEach(function(s) {
-                    output_list.forEach(function(streamo_) {
-                        streamo_.on('data', function(arg) {
+                output_list.forEach(function(streamo_) {
+                    streamo_.on('data', function(arg) {
+                        streami_s.forEach(function(s) {
                             s.write(arg);
                         });
-
                     });
                 });
             }
 
-            // Connect to the base input
-            var base_input_list = self.basic_inputs[keyi];
-            if (base_input_list) {
-                base_input_list.forEach(function(b_input) {
-                    if (b_input.inputsetting.variable === keyi) {
-                        b_input.on('data', function(arg) {
-                            streami_s.forEach(function(s) {
-                                s.write(arg);
+            var is_base_input = false;
+            is_base_input = streami_s.length > 0 && streami_s[0].inputsetting.type === "base_input";
+            if (is_base_input) {
+                // Connect to the base input
+                var base_input_list = self.basic_inputs[keyi];
+                if (base_input_list) {
+                    base_input_list.forEach(function(b_input) {
+                        if (b_input.inputsetting.variable === keyi) {
+                            b_input.on('data', function(arg) {
+                                streami_s.forEach(function(s) {
+                                    s.write(arg);
+                                });
+
                             });
-                        });
-                    }
-                });
+                        }
+                    });
+                }
             }
 
-            // Connect to the base output 
-            var base_output_list = self.basic_outputs[keyi];
-            if (base_output_list) {
-                base_output_list.forEach(function(b_output) {
-                    if (b_output.outsetting.variable === keyi) {
-                        b_output.on('data', function(arg) {
-                            streami_s.forEach(function(s) {
-                                s.write(arg);
+            var is_base_output = false;
+            is_base_output = streami_s.length > 0 && streami_s[0].inputsetting.type === "base_output";
+            if (is_base_output) {
+                // Connect to the base output 
+                var base_output_list = self.basic_outputs[keyi];
+                if (base_output_list) {
+                    base_output_list.forEach(function(b_output) {
+                        if (b_output.outsetting.variable === keyi) {
+                            b_output.on('data', function(arg) {
+                                streami_s.forEach(function(s) {
+                                    s.write(arg);
+                                });
+
                             });
-                        });
-                    }
-                });
+                        }
+                    });
+                }
             }
         });
 
@@ -179,10 +188,12 @@ function DAG(settings, engine) {
         Object.keys(this.basic_inputs).forEach(function(key) {
             var binputlist = self.basic_inputs[key];
             if (binputlist) {
-                app.inputbus.addListener(self.basic_inputs[key].inputsetting.variable, function(val) {
+                app.inputbus.addListener(key, function(val) {
+                    //console.log("Base INPUT " + key + " = " + val);
                     binputlist.forEach(element => {
                         element.write(val);
                     });
+
                 });
             }
         });
@@ -193,7 +204,9 @@ function DAG(settings, engine) {
             if (boutputlist) {
                 boutputlist.forEach(streami => {
                     streami.on('data', function(arg) {
+                        //console.log("Base OUTPUT " + key + " = " + arg);
                         app.outputbus.emit(streami.outsetting.variable, arg);
+
                     });
                 });
             }
@@ -206,7 +219,7 @@ function DAG(settings, engine) {
         Object.keys(this.basic_inputs).forEach(function(key) {
             var binputlist = self.basic_inputs[key];
             if (binputlist) {
-                app.inputbus.removeListener(self.basic_inputs[key].inputsetting.variable, function(val) {
+                app.inputbus.removeListener(key, function(val) {
                     binputlist.forEach(element => {
                         element.write(val);
                     });
