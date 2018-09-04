@@ -3,7 +3,7 @@
 default_ca               = CA_default
 
 [ CA_default ]
-dir                      = C:/Users/localadmin/Desktop/Open_Access_OPCUA/application/modules/northbounds/OPCUAServerStreamer/certificates/CA            # the main CA folder
+dir                      = D:/GIT_REPO/OPEN-ACCESS/application/modules/northbounds/OPCUAServerStreamer/certificates/CA            # the main CA folder
 certs                    = $dir/certs                 # where to store certificates
 new_certs_dir            = $dir/certs                 #
 database                 = $dir/index.txt             # the certificate database

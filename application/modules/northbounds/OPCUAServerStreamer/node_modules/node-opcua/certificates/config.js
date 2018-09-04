@@ -1,18 +1,17 @@
 "use strict";
 // ---------------------------------------------------------------------------------------------------------------------
-module.exports =  {
+module.exports = {
 
     subject: {
-        commonName:         "NodeOPCUA-TEST",
-        organization:       "NodeOPCUA",
-        organizationUnit:   "Unit",
-        locality:           "Paris",
-        state:              "IDF",
-        country:            "FR" // Two letters
+        commonName: "OPEN_ACCESS",
+        organization: "FAU",
+        organizationUnit: "FAPS",
+        locality: "NUEREMBERG",
+        state: "BAVARIA",
+        country: "DE" // Two letters
     },
 
-    validity:           365 * 15, // 15 years
+    validity: 365 * 15, // 15 years
 
-    keySize:            2048 // default private key size
+    keySize: 2048 // default private key size
 };
-
