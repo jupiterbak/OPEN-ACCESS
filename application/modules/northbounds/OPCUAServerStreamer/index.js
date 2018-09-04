@@ -178,23 +178,23 @@ OPCUAServerStreamerInterface.prototype.init = function(_app, _settings) {
     }
     // Initialize the module
     this.server = new opcua.OPCUAServer({
-        port: this.settings.modulesetting.port,
+        port: self.settings.modulesetting.port,
         timeout: 15000,
         maxAllowedSessionNumber: 100,
         allowAnonymous: true,
         serverInfo: {
-            applicationUri: "http://faps.fau.de/OPCUA_SERVER",
-            productUri: "faps.fau.de/ESYS_DEMONSTRATOR_example",
-            applicationName: { text: "ESYS_DEMONSTRATOR@FAPS" }
+            applicationUri: self.settings.modulesetting.serverInfo.applicationUri,
+            productUri: self.settings.modulesetting.serverInfo.productUri,
+            applicationName: { text: self.settings.modulesetting.serverInfo.applicationName.text }
         },
         nodeset_filename: nodeset_filenames,
-        alternateHostname: this.settings.modulesetting.ip,
+        alternateHostname: self.settings.modulesetting.ip,
         isAuditing: false,
         certificateFile: server_certificate_file,
         privateKeyFile: server_certificate_privatekey_file
     });
 
-    this.server.buildInfo.productName = "ESYS_DEMONSTRATOR@FAPS";
+    this.server.buildInfo.productName = self.settings.name;
     this.server.buildInfo.buildNumber = "001";
     this.server.buildInfo.buildDate = new Date();
 
