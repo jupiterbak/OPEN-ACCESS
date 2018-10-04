@@ -40,7 +40,6 @@ var TCPPHY = function (port, host) {
 
     this.server = net.createServer(
         function (socket) {
-            console.log((new Date()) + ' - A client connected to server...' + JSON.stringify(socket.address()));
             socket.id = IdGenerator.generate();
             socket.pipe(self.bufferSplitter)
             .on('data', function (data) {
