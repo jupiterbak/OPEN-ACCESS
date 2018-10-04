@@ -434,7 +434,7 @@ module.exports = {
         //         }
         //     ]
         // },
-        example_config: {
+        example_AMQPOutputStreamer: {
             id: "AMQPOutputStreamer1", 		        // Unique ID of the module in the global configuration
             name: "AMQPOutputStreamer1", 	        // Name of the module instance.
             type: "AMQPOutputStreamer", 	            // Type of the module, should always be "AMQPOutputStreamer" in order to use this module

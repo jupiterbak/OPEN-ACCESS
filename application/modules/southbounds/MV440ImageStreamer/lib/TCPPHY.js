@@ -66,7 +66,7 @@ TCPPHY.prototype.start = function () {
 };
 
 TCPPHY.prototype.stop = function () {
-    this.server.stop();
+    this.server.close();
     this.started = false;
 };
 
