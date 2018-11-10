@@ -515,8 +515,8 @@ module.exports = {
                 ip: "localhost",
                 port: 48024,
                 endpointName: 'OPCUA@FAPS',
-                server_certificate_file: 'server_cert_1024_Jupiter.pem',
-                server_certificate_privatekey_file:'server_key_1024_Jupiter.pem',
+                server_certificate_file: 'server_certificate_2048_5_years.pem',
+                server_certificate_privatekey_file:'server_key_2048_5_years.pem',
                 serverInfo: {
                     applicationUri: "http://faps.fau.de/OPCUA_SERVER",
                     productUri: "faps.fau.de/ESYS_DEMONSTRATOR_example",

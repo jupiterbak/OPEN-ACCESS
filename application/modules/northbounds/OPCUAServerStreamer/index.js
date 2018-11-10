@@ -35,8 +35,8 @@
                 ip: "localhost",
                 port: 48024,
                 endpointName: 'OPCUA@FAPS',
-                server_certificate_file: 'server_cert_1024.pem',
-                server_certificate_privatekey_file:'server_key_1024.pem',
+                server_certificate_file: 'server_certificate_2048.pem',
+                server_certificate_privatekey_file:'server_key_2048.pem',
                 serverInfo: {
                     applicationUri: "http://faps.fau.de/OPCUA_SERVER",
                     productUri: "faps.fau.de/ESYS_DEMONSTRATOR_example",
