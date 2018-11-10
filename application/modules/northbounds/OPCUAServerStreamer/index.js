@@ -35,6 +35,8 @@
                 ip: "localhost",
                 port: 48024,
                 endpointName: 'OPCUA@FAPS',
+                server_certificate_file: 'server_cert_1024.pem',
+                server_certificate_privatekey_file:'server_key_1024.pem',
                 serverInfo: {
                     applicationUri: "http://faps.fau.de/OPCUA_SERVER",
                     productUri: "faps.fau.de/ESYS_DEMONSTRATOR_example",
@@ -114,8 +116,7 @@ var rootFolder = path.join(__dirname, "../../../../");
 
 //var server_certificate_file = path.join(__dirname, "./certificates/uaservercert.der");
 //var server_certificate_privatekey_file = path.join(__dirname, "./certificates/uaserverkey.nopass.pem");
-var server_certificate_file = path.join(__dirname, "./certificates/server_cert_1024.pem");
-var server_certificate_privatekey_file = path.join(__dirname, "./certificates/server_key_1024.pem");
+
 
 var regexGUID = /^[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}/;
 var isValidGuid = function(guid) {
@@ -151,6 +152,8 @@ OPCUAServerStreamerInterface.prototype.init = function(_app, _settings) {
     this.settings.modulesetting.ip = this.settings.modulesetting.ip || "localhost";
     this.settings.modulesetting.port = this.settings.modulesetting.port || 48020;
     this.settings.modulesetting.endpointName = this.settings.modulesetting.endpointName || 'OPCUA@FAPS';
+    this.settings.modulesetting.server_certificate_file = this.settings.modulesetting.server_certificate_file || "server_cert_1024.pem";
+    this.settings.modulesetting.server_certificate_privatekey_file = this.settings.modulesetting.server_certificate_privatekey_file || "server_key_1024.pem";
     this.settings.modulesetting.serverInfo = this.settings.modulesetting.serverInfo || {
         applicationUri: "http://faps.fau.de/OPCUA_SERVER",
         productUri: "faps.fau.de/ESYS_DEMONSTRATOR_example",
@@ -190,8 +193,8 @@ OPCUAServerStreamerInterface.prototype.init = function(_app, _settings) {
         nodeset_filename: nodeset_filenames,
         alternateHostname: self.settings.modulesetting.ip,
         isAuditing: false,
-        certificateFile: server_certificate_file,
-        privateKeyFile: server_certificate_privatekey_file
+        certificateFile: path.join(rootFolder, "./certificates/" + self.settings.modulesetting.server_certificate_file),
+        privateKeyFile: path.join(rootFolder,"./certificates/" + self.settings.modulesetting.server_certificate_privatekey_file)
     });
 
     this.server.buildInfo.productName = self.settings.name;

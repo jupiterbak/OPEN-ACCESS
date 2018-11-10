@@ -175,22 +175,22 @@ module.exports = {
                 }
             ],
             system: false
-        },
-        "Example_MV440ImageStreamer":{
-            id: "MV440ImageStreamer1",		// Unique ID of the module in the global configuration
-            name: "MV440ImageStreamer1", 	// Name of the module instance.
-            type: "MV440ImageStreamer",     // Type of the module, should always be "LCOM" in order to use this module
-            modulesetting: {
-                port: 8765, 			// Local Port of the Socket server module
-                host: "192.168.1.53", // Ip-Address to bound the socket listener
-            },
-            outputs_variables: [ 	// The output variables specify how to interpret and map the data received
-                {
-                    name: "ImageFiles", 	// Variable Name
-                    datatype: "Object", 	// Type of the data to read: always "object"
-                }
-            ]
         }
+        // "Example_MV440ImageStreamer":{
+        //     id: "MV440ImageStreamer1",		// Unique ID of the module in the global configuration
+        //     name: "MV440ImageStreamer1", 	// Name of the module instance.
+        //     type: "MV440ImageStreamer",     // Type of the module, should always be "LCOM" in order to use this module
+        //     modulesetting: {
+        //         port: 8765, 			// Local Port of the Socket server module
+        //         host: "192.168.1.53", // Ip-Address to bound the socket listener
+        //     },
+        //     outputs_variables: [ 	// The output variables specify how to interpret and map the data received
+        //         {
+        //             name: "ImageFiles", 	// Variable Name
+        //             datatype: "Object", 	// Type of the data to read: always "object"
+        //         }
+        //     ]
+        // },
         // example_SNAP7_config: {
         //     id: "SNAP7Client1", // Unique ID of the module in the global configuration
         //     name: "SNAP7Client1", // Name of the module instance.
@@ -434,77 +434,77 @@ module.exports = {
         //         }
         //     ]
         // },
-        example_AMQPOutputStreamer: {
-            id: "AMQPOutputStreamer1", 		        // Unique ID of the module in the global configuration
-            name: "AMQPOutputStreamer1", 	        // Name of the module instance.
-            type: "AMQPOutputStreamer", 	            // Type of the module, should always be "AMQPOutputStreamer" in order to use this module
-            modulesetting: {
-                server_address: "amqp://esys:esys@131.188.113.59",              // Remote Address of the amqp server module
-                exchange:'AMQPStreamer_Exchange_CameraPictures',  // RabbitMQ Exchange, since we used a rabbitMQ Client
-                queue:'DemonstratorCameraPictures'                // RabbitMQ dedicated Que name 
+        // example_AMQPOutputStreamer: {
+        //     id: "AMQPOutputStreamer1", 		        // Unique ID of the module in the global configuration
+        //     name: "AMQPOutputStreamer1", 	        // Name of the module instance.
+        //     type: "AMQPOutputStreamer", 	            // Type of the module, should always be "AMQPOutputStreamer" in order to use this module
+        //     modulesetting: {
+        //         server_address: "amqp://esys:esys@131.188.113.59",              // Remote Address of the amqp server module
+        //         exchange:'AMQPStreamer_Exchange_CameraPictures',  // RabbitMQ Exchange, since we used a rabbitMQ Client
+        //         queue:'DemonstratorCameraPictures'                // RabbitMQ dedicated Que name 
                 
-            },
-            inputs_variables: [ 	// The output variables specify how to interpret and map the data received
-                {
-                        name: "ImageFiles",    // Name of the variable that will hold the data received
-                        datatype: "object",                                 // All data received will be encapsulated in an object
-                        si_unit: "-",
-                        default: {}
-                    }
-            ]
-        },
-        WSSStreamer_example_config: {
-            id: "WSStreamer1", // Unique ID of the module in the global configuration
-            name: "WSStreamer1", // Name of the module instance.
-            type: "WSStreamer", // Type of the module, should always be "WSStreamer" in order to use this module
-            modulesetting: {
-                port: 8080 // local port of the websocket server.
-            },
-            inputs_variables: [ // The output variables specify the variables to generate
-                {
-                    name: "P1", // Variable Name
-                    datatype: "real", // Type of the data to read: "real", "int", "byte"
-                    si_unit: "V", // Unit of the data variable. It is optional
-                    default: 0.0 // Default value
-                },
-                {
-                    name: "P2",
-                    datatype: "real",
-                    si_unit: "V",
-                    default: 0.0
-                },
-                {
-                    name: "I_Bool_Enable", // Variable that will hold the serialized value comming from the PLC.
-                    datatype: "byte", // Type of the data to read: "real", "int", "byte"
-                    default: false,
-                    si_unit: "V", // Unit of the data variable. It is optional
-                },
-                {
-                    name: "I_Bool_Direction", // Variable that will hold the serialized value comming from the PLC.
-                    datatype: "byte", // Type of the data to read: "real", "int", "byte"
-                    default: false,
-                    si_unit: "V", // Unit of the data variable. It is optional
-                },
-                {
-                    name: "Q_Bool_Run", // Variable that will hold the serialized value comming from the PLC.
-                    datatype: "byte", // Type of the data to read: "real", "int", "byte"
-                    default: false,
-                    si_unit: "V", // Unit of the data variable. It is optional
-                },
-                {
-                    name: "Q_Real_Velocity", // Variable that will hold the serialized value comming from the PLC.
-                    datatype: "real", // Type of the data to read: "real", "int", "byte"
-                    default: 0.0,
-                    si_unit: "V", // Unit of the data variable. It is optional
-                },
-                {
-                    name: "I_Target_Velocity", // Variable that will hold the serialized value comming from the PLC.
-                    datatype: "real", // Type of the data to read: "real", "int", "byte"
-                    default: 0.0,
-                    si_unit: "V", // Unit of the data variable. It is optional
-                }
-            ]
-        },
+        //     },
+        //     inputs_variables: [ 	// The output variables specify how to interpret and map the data received
+        //         {
+        //                 name: "ImageFiles",    // Name of the variable that will hold the data received
+        //                 datatype: "object",                                 // All data received will be encapsulated in an object
+        //                 si_unit: "-",
+        //                 default: {}
+        //             }
+        //     ]
+        // },
+        // WSSStreamer_example_config: {
+        //     id: "WSStreamer1", // Unique ID of the module in the global configuration
+        //     name: "WSStreamer1", // Name of the module instance.
+        //     type: "WSStreamer", // Type of the module, should always be "WSStreamer" in order to use this module
+        //     modulesetting: {
+        //         port: 8080 // local port of the websocket server.
+        //     },
+        //     inputs_variables: [ // The output variables specify the variables to generate
+        //         {
+        //             name: "P1", // Variable Name
+        //             datatype: "real", // Type of the data to read: "real", "int", "byte"
+        //             si_unit: "V", // Unit of the data variable. It is optional
+        //             default: 0.0 // Default value
+        //         },
+        //         {
+        //             name: "P2",
+        //             datatype: "real",
+        //             si_unit: "V",
+        //             default: 0.0
+        //         },
+        //         {
+        //             name: "I_Bool_Enable", // Variable that will hold the serialized value comming from the PLC.
+        //             datatype: "byte", // Type of the data to read: "real", "int", "byte"
+        //             default: false,
+        //             si_unit: "V", // Unit of the data variable. It is optional
+        //         },
+        //         {
+        //             name: "I_Bool_Direction", // Variable that will hold the serialized value comming from the PLC.
+        //             datatype: "byte", // Type of the data to read: "real", "int", "byte"
+        //             default: false,
+        //             si_unit: "V", // Unit of the data variable. It is optional
+        //         },
+        //         {
+        //             name: "Q_Bool_Run", // Variable that will hold the serialized value comming from the PLC.
+        //             datatype: "byte", // Type of the data to read: "real", "int", "byte"
+        //             default: false,
+        //             si_unit: "V", // Unit of the data variable. It is optional
+        //         },
+        //         {
+        //             name: "Q_Real_Velocity", // Variable that will hold the serialized value comming from the PLC.
+        //             datatype: "real", // Type of the data to read: "real", "int", "byte"
+        //             default: 0.0,
+        //             si_unit: "V", // Unit of the data variable. It is optional
+        //         },
+        //         {
+        //             name: "I_Target_Velocity", // Variable that will hold the serialized value comming from the PLC.
+        //             datatype: "real", // Type of the data to read: "real", "int", "byte"
+        //             default: 0.0,
+        //             si_unit: "V", // Unit of the data variable. It is optional
+        //         }
+        //     ]
+        // },
 
         opcua0: {
             id: "OPCUAServerStreamer_1",
@@ -515,6 +515,8 @@ module.exports = {
                 ip: "localhost",
                 port: 48024,
                 endpointName: 'OPCUA@FAPS',
+                server_certificate_file: 'server_cert_1024_Jupiter.pem',
+                server_certificate_privatekey_file:'server_key_1024_Jupiter.pem',
                 serverInfo: {
                     applicationUri: "http://faps.fau.de/OPCUA_SERVER",
                     productUri: "faps.fau.de/ESYS_DEMONSTRATOR_example",
@@ -658,29 +660,29 @@ module.exports = {
                             variable: "P2"
                         }]
                     },
-                    ImageFiles_FORWARD: {
-                        id: "ImageFiles_FORWARD",
-                        name: "ImageFiles_FORWARD",
-                        type: "FORWARDOBJECT",
-                        inputs: [{
-                            name: "a",
-                            label: "",
-                            datatype: "object",
-                            si_unit: "-",
-                            default: {},
-                            type: "base_input",
-                            variable: "ImageFiles"
-                        }],
-                        outputs: [{
-                            name: "b",
-                            label: "",
-                            datatype: "object",
-                            si_unit: "-",
-                            default: {},
-                            type: "base_output",
-                            variable: "ImageFiles"
-                        }]
-                    },
+                    // ImageFiles_FORWARD: {
+                    //     id: "ImageFiles_FORWARD",
+                    //     name: "ImageFiles_FORWARD",
+                    //     type: "FORWARDOBJECT",
+                    //     inputs: [{
+                    //         name: "a",
+                    //         label: "",
+                    //         datatype: "object",
+                    //         si_unit: "-",
+                    //         default: {},
+                    //         type: "base_input",
+                    //         variable: "ImageFiles"
+                    //     }],
+                    //     outputs: [{
+                    //         name: "b",
+                    //         label: "",
+                    //         datatype: "object",
+                    //         si_unit: "-",
+                    //         default: {},
+                    //         type: "base_output",
+                    //         variable: "ImageFiles"
+                    //     }]
+                    // },
                     // I_Bool_Direction_FORWARD: {
                     //     id: "I_Bool_Direction_FORWARD",
                     //     name: "I_Bool_Direction_FORWARD",
