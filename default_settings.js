@@ -442,7 +442,7 @@ module.exports = {
         //         server_address: "amqp://esys:esys@131.188.113.59",              // Remote Address of the amqp server module
         //         exchange:'AMQPStreamer_Exchange_CameraPictures',  // RabbitMQ Exchange, since we used a rabbitMQ Client
         //         queue:'DemonstratorCameraPictures'                // RabbitMQ dedicated Que name 
-                
+
         //     },
         //     inputs_variables: [ 	// The output variables specify how to interpret and map the data received
         //         {
@@ -516,9 +516,9 @@ module.exports = {
                 port: 48024,
                 endpointName: 'OPCUA@FAPS',
                 server_certificate_file: 'server_certificate_2048_5_years.pem',
-                server_certificate_privatekey_file:'server_key_2048_5_years.pem',
-                username: 'root',
-                passsword:'root',
+                server_certificate_privatekey_file: 'server_key_2048_5_years.pem',
+                username: 'jupiter',
+                password: 'jupiter',
                 allowAnonymous: false,
                 serverInfo: {
                     applicationUri: "http://faps.fau.de/OPCUA_SERVER",

@@ -38,7 +38,7 @@
                 server_certificate_file: 'server_certificate_2048.pem',
                 server_certificate_privatekey_file:'server_key_2048.pem',
                 username: 'root',
-                passsword:'root',
+                password:'root',
                 allowAnonymous: false,
                 serverInfo: {
                     applicationUri: "http://faps.fau.de/OPCUA_SERVER",
@@ -158,7 +158,7 @@ OPCUAServerStreamerInterface.prototype.init = function(_app, _settings) {
     this.settings.modulesetting.server_certificate_file = this.settings.modulesetting.server_certificate_file || "server_cert_1024.pem";
     this.settings.modulesetting.server_certificate_privatekey_file = this.settings.modulesetting.server_certificate_privatekey_file || "server_key_1024.pem";
     this.settings.modulesetting.username = this.settings.modulesetting.username || 'root';
-    this.settings.modulesetting.passsword = this.settings.modulesetting.passsword ||'root';
+    this.settings.modulesetting.password = this.settings.modulesetting.password || 'root';
     this.settings.modulesetting.allowAnonymous = this.settings.modulesetting.allowAnonymous || false;
     this.settings.modulesetting.serverInfo = this.settings.modulesetting.serverInfo || {
         applicationUri: "http://faps.fau.de/OPCUA_SERVER",
@@ -199,9 +199,9 @@ OPCUAServerStreamerInterface.prototype.init = function(_app, _settings) {
         alternateHostname: self.settings.modulesetting.ip,
         isAuditing: false,
         certificateFile: path.join(rootFolder, "./certificates/" + self.settings.modulesetting.server_certificate_file),
-        privateKeyFile: path.join(rootFolder,"./certificates/" + self.settings.modulesetting.server_certificate_privatekey_file),
+        privateKeyFile: path.join(rootFolder, "./certificates/" + self.settings.modulesetting.server_certificate_privatekey_file),
         userManager: {
-            isValidUser: function (userName, password) {
+            isValidUser: function(userName, password) {
                 if (userName === self.settings.modulesetting.username && password === self.settings.modulesetting.password) {
                     return true;
                 }
