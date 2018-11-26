@@ -29,7 +29,7 @@
  	example_config: {
 		id: "DemonstratorProgramListener1", 		// Unique ID of the module in the global configuration
 		name: "DemonstratorProgramListener1", 	    // Name of the module instance.
-		type: "ModBusClient", 	                    // Type of the module, should always be "DemonstratorProgramListener" in order to use this module
+		type: "DemonstratorProgramListener", 	                    // Type of the module, should always be "DemonstratorProgramListener" in order to use this module
 		modulesetting: {
 			listener_port:3461, 			// Local Port to listen
 			

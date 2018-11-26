@@ -59,7 +59,12 @@ DemonstratorProgramWriter.prototype.start = function() {
     this.mytcpserver.initializeMainClient(self.settings.modulesetting.client_host, self.settings.modulesetting.client_port);
     self.settings.inputs_variables.forEach(function(el) {
         self.app.outputbus.addListener(el.name, function(arg) {
+			var startTime = new Date();
+			self.app.engine.log.info("Northbound[" + self.settings.name + "] Cloud Program Client start writing: " + startTime);
             self.mytcpserver.mainClientWrite(arg);
+			var endTime = new Date();
+			self.app.engine.log.info("Northbound[" + self.settings.name + "] Cloud Program Client end writing: " + endTime);
+			self.app.engine.log.info("Northbound[" + self.settings.name + "] Cloud Program Client total time: " + (endTime.getTime() - startTime.getTime()) + " ms");
         });
     });
 

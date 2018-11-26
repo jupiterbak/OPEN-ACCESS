@@ -514,19 +514,20 @@ tcp_server.prototype.mainClientWrite = function (prgObj) {
     var self = this;
     if(self.main_client){
         // Encode data
-		//console.log("PROGRAM DATA FROM CLOUD --> New KTCP DATA: length = " + prgObj.length);
-		
+		//console.log("PROGRAM DATA FROM CLOUD --> New KTCP DATA: length = " + prgObj.length);		
 		var l = prgObj.length;
-		
 		if(l <= PROGRAM_MAX_CMD){ 
-			self.writeBuffer = new Buffer(40 * PROGRAM_MAX_CMD);
-			self.writeBuffer.fill(0);
+			self.writeBuffer = new Buffer((40 * PROGRAM_MAX_CMD) + 8);
+			self.writeBuffer.fill(0);			
+			// write the program length
+			self.writeBuffer.writeDoubleBE(l, 0);
 			for(k=0;k < l; k++){
-				var _index = k * 40;
+				var _index = (k * 40) + 8;
 				self.encodeCmd(prgObj[k],self.writeBuffer,_index);
 			}
 			// Fill unused buffer bytes
 			//console.log("PROGRAM DATA FROM CLOUD --> DATA = " + self.writeBuffer.toString('hex'));
+			
 			self.main_client.write(self.writeBuffer);
 		}
     }

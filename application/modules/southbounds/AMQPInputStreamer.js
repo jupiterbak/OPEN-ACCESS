@@ -110,7 +110,7 @@ AMQPInputStreamerInterface.prototype.start = function(obj) {
 
                 conn.on('error', function(err) {
                     self.app.engine.log.warn("Southbound[" + self.settings.name + "] Generated event 'error': " + JSON.stringify(err));
-                    self.fibonacciBackoff.backoff();
+                    //self.fibonacciBackoff.backoff();
                 });
 
                 conn.on('close', function() {
@@ -126,16 +126,17 @@ AMQPInputStreamerInterface.prototype.start = function(obj) {
                         if (err) {
                             self.app.engine.log.warn("Southbound[" + self.settings.name + "] could not assert queue err: " + JSON.stringify(err));
                         } else {
-                            //console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", q.queue);
+                            
                             self.amqp_ch.bindQueue(q.queue, self.settings.modulesetting.exchange, '');
-
                             self.amqp_ch.consume(q.queue, function(msg) {
+								
                                 var data = JSON.parse(msg.content.toString());
+								//self.app.engine.log.info("Southbound[" + self.settings.name + "] PROGRAM FROM CLOUD: " + JSON.stringify(data));
                                 self.settings.outputs_variables.forEach(function(el) {
                                     var n = el.name;
                                     self.app.inputbus.emit(n, data);
                                 });
-                                //self.app.engine.log.info("#PROGRAM FROM CLOUD: " + JSON.stringify(data));
+                                
                             }, { noAck: true });
                         }
 
