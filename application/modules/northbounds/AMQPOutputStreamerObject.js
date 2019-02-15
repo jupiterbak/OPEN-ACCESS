@@ -26,9 +26,9 @@
  * ###################### Description #####################################
  * AMQPOutputStreamer -- AMQP Client that receive data
  	example_config: {
-		id: "AMQPOutputStreamer1", 		        // Unique ID of the module in the global configuration
-		name: "AMQPOutputStreamer1", 	        // Name of the module instance.
-		type: "AMQPOutputStreamer", 	            // Type of the module, should always be "AMQPOutputStreamer" in order to use this module
+		id: "AMQPOutputStreamerObject1", 		        // Unique ID of the module in the global configuration
+		name: "AMQPOutputStreamerObject1", 	        // Name of the module instance.
+		type: "AMQPOutputStreamerObject", 	            // Type of the module, should always be "AMQPOutputStreamer" in order to use this module
 		modulesetting: {
 			server_address: "amqp://esys:esys@131.188.113.59",              // Remote Address of the amqp server module. This attribute is required
 			exchange:'AMQPStreamer_Exchange_ProgramFromCloud',  // RabbitMQ Exchange, since we used a rabbitMQ Client. This attribute is required
