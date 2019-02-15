@@ -132,6 +132,7 @@ AMQPStreamerInterface.prototype.start = function() {
                 self.amqp_connection.createChannel(function(err, ch) {
                     self.amqp_ch = ch;
                     self.amqp_ch.assertExchange(self.settings.modulesetting.exchange, 'fanout', { durable: false });
+                    self.amqp_ch.assertQueue(self.settings.modulesetting.queue, { durable: false });
 
                     // Extra binding for the exchange
                     self.amqp_ch.bindQueue(self.settings.modulesetting.queue, self.settings.modulesetting.exchange, '');

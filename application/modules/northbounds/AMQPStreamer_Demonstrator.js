@@ -77,6 +77,7 @@ AMQPStreamerInterface.prototype.start = function() {
         conn.createChannel(function(err, ch) {
             self.amqp_ch = ch;
             self.amqp_ch.assertExchange(self.settings.modulesetting.exchange, 'fanout', { durable: false });
+            self.amqp_ch.assertQueue(self.settings.modulesetting.queue, { durable: false });
 
             self.settings.inputs_variables.forEach(function(el) {
                 self.app.outputbus.addListener(el.name, function(arg) {
