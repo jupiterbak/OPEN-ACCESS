@@ -1,5 +1,5 @@
 /**
- * Copyright 2018 FAPS.
+ * Copyright 2019 FAPS.
  *
  * File: application/modules/northbounds/dummyServer.js
  * Project: SP 142
@@ -30,15 +30,16 @@
 		name: "AMQPOutputStreamer1", 	        // Name of the module instance.
 		type: "AMQPOutputStreamer", 	            // Type of the module, should always be "AMQPOutputStreamer" in order to use this module
 		modulesetting: {
-			server_address: "amqp://esys:esys@131.188.113.59",              // Remote Address of the amqp server module
-			exchange:'AMQPStreamer_Exchange_ProgramFromCloud',  // RabbitMQ Exchange, since we used a rabbitMQ Client
-            queue:'DemonstratorProgramToCloud'                // RabbitMQ dedicated Que name 
-			
-		},
+			server_address: "amqp://esys:esys@131.188.113.59",              // Remote Address of the amqp server module. This attribute is required
+			exchange:'AMQPStreamer_Exchange_ProgramFromCloud',  // RabbitMQ Exchange, since we used a rabbitMQ Client. This attribute is required
+            queue:'DemonstratorProgramToCloud',               // RabbitMQ dedicated Que name . This attribute is required
+            object_name: 'OPEN_ACCESS_AMQP_Stream_Object',     // Name of the object that holds all values. This attribute is required
+            interval: 50                                        // Time interval (ms) to transfer the data to the cloud
+        },
 		inputs_variables: [ 	// The output variables specify how to interpret and map the data received
 			{
                     name: "FAPS_DemonstratorProgramToCloud_Output",    // Name of the variable that will hold the data received
-                    datatype: "-",                                 // All data received will be encapsulated in an object
+                    datatype: "Object",                                 // All data received will be encapsulated in an object
                     si_unit: "-",
                     default: {}
                 }
@@ -53,7 +54,14 @@ var util = require("util");
 var backoff = require('backoff');
 var amqp = require('amqplib/callback_api');
 
-var AMQPStreamerInterface = function() {};
+var AMQPStreamerInterface = function() {
+    this.object_to_send = {
+        name: "OPEN_ACCESS_AMQP_Stream_Object",
+        values: {}
+    };
+
+    this.IntervalTimeout = null;
+};
 
 AMQPStreamerInterface.prototype.init = function(_app, _settings) {
     var self = this;
@@ -66,6 +74,9 @@ AMQPStreamerInterface.prototype.init = function(_app, _settings) {
     this.settings.modulesetting.server_address = this.settings.modulesetting.server_address || "amqp://esys:esys@cloud.faps.uni-erlangen.de";
     this.settings.modulesetting.exchange = this.settings.modulesetting.exchange || this.settings.id;
     this.settings.modulesetting.queue = this.settings.modulesetting.queue || 'DemonstratorProgramToCloud';
+    this.settings.modulesetting.interval = this.settings.modulesetting.interval || 200;
+    this.object_to_send.name = this.settings.modulesetting.object_name || 'OPEN_ACCESS_AMQP_Stream_Object';
+    this.object_to_send.values = {};
     this.settings.inputs_variables = this.settings.inputs_variables || [];
     // Initialize the module
 
@@ -86,10 +97,18 @@ AMQPStreamerInterface.prototype.start = function() {
 
     self.fibonacciBackoff.on('backoff', function(number, delay) {
         self.app.engine.log.info("Southbound[" + self.settings.name + "] will start connection in : " + delay + 'ms - attempt ' + number + '.');
+        if (self.IntervalTimeout) {
+            clearInterval(self.IntervalTimeout);
+            self.IntervalTimeout = null;
+        }
     });
 
     self.fibonacciBackoff.on('fail', function() {
         self.app.engine.log.warn("Southbound[" + self.settings.name + "] couldn't connect to: " + self.settings.modulesetting.ip + ' will retry.');
+        if (self.IntervalTimeout) {
+            clearInterval(self.IntervalTimeout);
+            self.IntervalTimeout = null;
+        }
     });
 
     self.fibonacciBackoff.on('ready', function(number, delay) {
@@ -116,16 +135,20 @@ AMQPStreamerInterface.prototype.start = function() {
 
                     // Extra binding for the exchange
                     self.amqp_ch.bindQueue(self.settings.modulesetting.queue, self.settings.modulesetting.exchange, '');
+                    if (self.IntervalTimeout === null) {
+                        self.IntervalTimeout = setInterval(function() {
+                            self.amqp_ch.publish(self.settings.modulesetting.exchange, '', new Buffer(JSON.stringify(self.object_to_send)));
+                        }, self.settings.modulesetting.interval);
+                    }
 
+                    // collect all the variables in the object 'self.object_to_send'
                     self.settings.inputs_variables.forEach(function(el) {
                         self.app.outputbus.addListener(el.name, function(arg) {
-                            if (self.amqp_ch) {
-                                self.amqp_ch.publish(self.settings.modulesetting.exchange, '', new Buffer(JSON.stringify({
-                                    value: arg,
-                                    id: el.name,
-                                    timestamp: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
-                                })));
-                            }
+                            // 
+                            self.object_to_send.values[el.name] = {
+                                value: arg,
+                                timestamp: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+                            };
                         });
                     });
                 });
@@ -148,7 +171,10 @@ AMQPStreamerInterface.prototype.stop = function() {
         self.amqp_connection.close();
     }
     delete self.amqp_connection;
-
+    if (self.IntervalTimeout) {
+        clearInterval(self.IntervalTimeout);
+        self.IntervalTimeout = null;
+    }
     self.app.engine.log.info("Northbound[" + self.settings.name + "] stops successfully!");
     return when.resolve();
 };
