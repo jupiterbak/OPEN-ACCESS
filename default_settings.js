@@ -133,11 +133,12 @@ module.exports = {
         }
     },
 
-    api: [{
-            name: "ConfigApi",
-            type: "Swagger",
-            port: 55554
-        }
+    api: [
+        // {
+        //     name: "ConfigApi",
+        //     type: "Swagger",
+        //     port: 55554
+        // }
         // ,
         // {
         //     name: "EberleinApi",
@@ -175,7 +176,38 @@ module.exports = {
                 }
             ],
             system: false
-        }
+        },
+        // example_config_opcua_client_object: {
+        //     id: "OPCUAClientObject1", // Unique ID of the module in the global configuration
+        //     name: "OPCUAClientObject1", // Name of the module instance.
+        //     type: "OPCUAClientObject", // Type of the module, should always be "OPCUAClientObject" in order to use this module
+        //     modulesetting: {
+        //         server_adress: "localhost", // Address of the remote opc ua server
+        //         port: 48022, // Remote Port of the opc ua server module
+        //         interval: 100, // default monitoring interval
+        //         object_name: "OPCUAClientObject"
+        //     },
+        //     outputs_variables: [ // The output variables specify how to interpret and map the data received
+        //         {
+        //             name: "Demo.Dynamic.Scalar.Double", // Variable Name
+        //             nodeId: {
+        //                 ns: 4, // NamespaceIndex of the variable to monitor
+        //                 nid: "Demo.Dynamic.Scalar.Double" // NodeId of the opcua variable
+        //             },
+        //             interval: 100, // Monitoring interval
+        //             default: 0.0 // Default value
+        //         },
+        //         {
+        //             name: "Demo.Dynamic.Scalar.Float", // Variable Name
+        //             nodeId: {
+        //                 ns: 4, // NamespaceIndex of the variable to monitor
+        //                 nid: "Demo.Dynamic.Scalar.Float" // NodeId of the opcua variable
+        //             },
+        //             interval: 100, // Monitoring interval
+        //             default: 0.0 // Default value
+        //         }
+        //     ]
+        // }
         // "Example_MV440ImageStreamer":{
         //     id: "MV440ImageStreamer1",		// Unique ID of the module in the global configuration
         //     name: "MV440ImageStreamer1", 	// Name of the module instance.
@@ -506,6 +538,87 @@ module.exports = {
         //     ]
         // },
 
+        // opcua0: {
+        //     id: "OPCUAServerStreamer_1",
+        //     name: "OPCUAServerStreamer_1",
+        //     type: "OPCUAServerStreamer",
+        //     level: "info",
+        //     modulesetting: {
+        //         ip: "localhost",
+        //         port: 48024,
+        //         endpointName: 'OPCUA@FAPS',
+        //         server_certificate_file: 'server_certificate_2048_5_years.pem',
+        //         server_certificate_privatekey_file: 'server_key_2048_5_years.pem',
+        //         username: 'jupiter',
+        //         password: 'jupiter',
+        //         allowAnonymous: false,
+        //         serverInfo: {
+        //             applicationUri: "http://faps.fau.de/OPCUA_SERVER",
+        //             productUri: "faps.fau.de/ESYS_DEMONSTRATOR_example",
+        //             applicationName: { text: "ESYS_DEMONSTRATOR@FAPS" }
+        //         },
+        //         serverNodeSet: [ // Server node set. Each item of these array will be instantiated in a separate namespace.
+        //             "./node_modules_xml/Opc.Ua.Plc.NodeSet2.xml",
+        //             "./node_modules_xml/demonstrator/faps.xml",
+        //             "./node_modules_xml/demonstrator/vdma_24582_condition_monitoring.xml",
+        //             "./node_modules_xml/demonstrator/packml.xml",
+        //             "./node_modules_xml/demonstrator/energybaustein.xml",
+        //             "./node_modules_xml/demonstrator/esys_demonstrator.xml"
+        //         ],
+        //         fromObject: {
+        //             enable: false,
+        //             object_inputs: [{
+        //                     name: "Portal_Stream_Energy_Data",
+        //                     variables: [{
+        //                         name: "P2",
+        //                         datatype: "real",
+        //                         si_unit: "A",
+        //                         default: 0.0,
+        //                         //-------------
+        //                         ns: "http://faps.fau.de/ESYS_DEMONSTRATOR/",
+        //                         nodeID: "FB1_Foerderband_Antrieb_acceleration"
+        //                             //-------------
+        //                     }]
+        //                 },
+        //                 {
+        //                     name: "Demonstrator_Stream_Data",
+        //                     variables: [{
+        //                         name: "encoder_values_x",
+        //                         datatype: "real",
+        //                         si_unit: "V",
+        //                         default: 0.0,
+        //                         //-------------
+        //                         ns: "http://faps.fau.de/ESYS_DEMONSTRATOR/",
+        //                         nodeID: "FB1_Foerderband_Antrieb_electricalcurrent"
+        //                             //-------------
+        //                     }]
+        //                 }
+        //             ]
+        //         }
+        //     },
+        //     inputs_variables: [ // The output variables specify how to interpret and map the data received
+        //         {
+        //             name: "P1", // Variable Name
+        //             targetNodeID: {
+        //                 ns: "http://faps.fau.de/ESYS_DEMONSTRATOR/", // Namespace uri
+        //                 nid: "FB1_Foerderband_Antrieb_acceleration" // NodeId of the opcua variable
+        //             },
+        //             datatype: "real",
+        //             default: 0.0 // Default value
+        //         },
+        //         {
+        //             name: "P2",
+        //             targetNodeID: {
+        //                 ns: "http://faps.fau.de/ESYS_DEMONSTRATOR/", // Namespace uri
+        //                 nid: "FB1_Foerderband_Antrieb_electricalcurrent" // NodeId of the opcua variable
+        //             },
+        //             datatype: "real",
+        //             default: 0.0
+        //         }
+        //     ],
+        //     system: false
+        // },
+
         opcua0: {
             id: "OPCUAServerStreamer_1",
             name: "OPCUAServerStreamer_1",
@@ -528,10 +641,7 @@ module.exports = {
                 serverNodeSet: [ // Server node set. Each item of these array will be instantiated in a separate namespace.
                     "./node_modules_xml/Opc.Ua.Plc.NodeSet2.xml",
                     "./node_modules_xml/demonstrator/faps.xml",
-                    "./node_modules_xml/demonstrator/vdma_24582_condition_monitoring.xml",
-                    "./node_modules_xml/demonstrator/packml.xml",
-                    "./node_modules_xml/demonstrator/energybaustein.xml",
-                    "./node_modules_xml/demonstrator/esys_demonstrator.xml"
+                    "./node_modules_xml/cki/CKI_PLC_1_OPCUA.xml"
                 ],
                 fromObject: {
                     enable: false,
@@ -585,7 +695,25 @@ module.exports = {
                 }
             ],
             system: false
-        }
+        },
+
+        // mindsphere_config: {
+        //     id: "MindsphreLibStreamer1", // Unique ID of the module in the global configuration
+        //     name: "MindsphreLibStreamer0", // Name of the module instance.
+        //     type: "MindsphreLibStreamer", // Type of the module, should always be "MindsphreLibStreamer" in order to use this module
+        //     modulesetting: {
+        //         configuration: "ConveyorAssetCredential.json", // JSON Configuration of the agent
+        //         object_name: 'OPCUAClientObject', // Name of the object that holds all values. This attribute is required
+        //         datapoint_mapping: [
+        //             { "dataPointId": "1557293223444", "qualityCode": "0", "name": "Demo.Dynamic.Scalar.Double" },
+        //             { "dataPointId": "1557294045308", "qualityCode": "0", "name": "Demo.Dynamic.Scalar.Float" },
+        //             { "dataPointId": "1557293154631", "qualityCode": "0", "name": "Demo.Dynamic.Scalar.Boolean" },
+        //             { "dataPointId": "1557293273534", "qualityCode": "0", "name": "Demo.Dynamic.Scalar.Boolean" },
+        //             { "dataPointId": "1557293295599", "qualityCode": "0", "name": "Demo.Dynamic.Scalar.Boolean" }
+        //         ],
+        //         interval: 1000 // Time interval (ms) to transfer the data to the cloud
+        //     }
+        // }
     },
     engine: {
         settings: {},
@@ -661,6 +789,29 @@ module.exports = {
                             default: 0.0,
                             type: "base_output",
                             variable: "P2"
+                        }]
+                    },
+                    OBJECT_FORWARD: {
+                        id: "OPCUAClientObject_FORWARD",
+                        name: "OPCUAClientObject_FORWARD",
+                        type: "FORWARDOBJECT",
+                        inputs: [{
+                            name: "a",
+                            label: "",
+                            datatype: "object",
+                            si_unit: "-",
+                            default: {},
+                            type: "base_input",
+                            variable: "OPCUAClientObject"
+                        }],
+                        outputs: [{
+                            name: "b",
+                            label: "",
+                            datatype: "object",
+                            si_unit: "-",
+                            default: {},
+                            type: "base_output",
+                            variable: "OPCUAClientObject"
                         }]
                     },
                     // ImageFiles_FORWARD: {
