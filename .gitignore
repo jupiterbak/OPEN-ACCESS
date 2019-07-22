@@ -2,6 +2,7 @@ node_modules/
 .open_access_settings/
 .mc/
 .mc
+.vscode/
 npm-debug.log
 default_settings_SMA.js
 sma/
