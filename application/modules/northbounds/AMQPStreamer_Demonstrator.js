@@ -88,7 +88,8 @@ AMQPStreamerInterface.prototype.start = function() {
                             self.amqp_ch.publish(self.settings.modulesetting.exchange, '', new Buffer(JSON.stringify({
                                 value: self.object_to_send.value,
                                 id: self.object_to_send.name,
-                                timestamp: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+                                timestamp: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
+                                timestampOnSend: Date.now()
                             })));
                             //self.app.engine.log.info("### AMQP --> "+ self.object_to_send.name +" : " + JSON.stringify(self.object_to_send));
                         }

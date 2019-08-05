@@ -59,6 +59,7 @@ var net = require('net');
 var southboundModuleInterface = function() {
     this.object_received = {
         name: "LCOM_Demonstrator",
+        timestampOnReceived: Date.now(),
         data: {}
     };
 };
@@ -91,6 +92,7 @@ southboundModuleInterface.prototype.init = function(_app, _settings) {
             //self.data_counter = self.data_counter + 1;
             //self.app.engine.log.info("Southbound[" + self.settings.name + "] " + "DATA " + sock.remoteAddress + " - data = " + data);
             self.object_received.name = self.settings.modulesetting.object_name;
+            self.object_received["timestampOnReceived"] = Date.now();
             if (data.length >= self.settings.modulesetting.packet_length) {
                 var c = 0;
                 self.settings.outputs_variables.forEach(function(el) {

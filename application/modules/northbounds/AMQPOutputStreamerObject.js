@@ -148,7 +148,8 @@ AMQPStreamerInterface.prototype.start = function() {
                             // 
                             self.object_to_send.values[el.name] = {
                                 value: arg,
-                                timestamp: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+                                timestamp: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
+                                timestampOnSend: Date.now()
                             };
                         });
                     });

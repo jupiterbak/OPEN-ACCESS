@@ -125,7 +125,8 @@ AMQPStreamerInterface.prototype.start = function() {
                                 self.amqp_ch.publish(self.settings.modulesetting.exchange, '', new Buffer(JSON.stringify({
                                     value: arg,
                                     id: el.name,
-                                    timestamp: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+                                    timestamp: new Date().toISOString().replace(/T/, ' ').replace(/\..+/, ''),
+                                    timestampOnSend: Date.now()
                                 })));
                             }
                         });
