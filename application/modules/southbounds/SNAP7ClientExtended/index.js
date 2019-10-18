@@ -159,7 +159,7 @@ SNAP7ModuleInterface.prototype.start = function() {
                                                         self.app.inputbus.emit(_variable.name, value); // Forward the serialized bytestream
                                                     } else if (_variable.datatype === "bool" && buffer.length > 0) {
                                                         value = buffer.readUInt8(_variable.offset);
-                                                        var bool_value = value & (1 << _variable.bitNumber);
+                                                        var bool_value = (value & (1 << _variable.bitNumber))>0;
                                                         self.app.inputbus.emit(_variable.name, bool_value); // Forward the serialized bytestream
                                                     } else {
                                                         value = buffer;
