@@ -93,7 +93,6 @@ try {
     settings.uiPort = settings.uiPort || 1717;
     settings.uiHost = settings.uiHost || "127.0.0.1";
 
-
 } catch (err) {
     console.log("Error loading settings file: " + settingsFile);
     if (err.code == 'MODULE_NOT_FOUND') {

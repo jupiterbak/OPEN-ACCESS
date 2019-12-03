@@ -52,52 +52,48 @@ module.exports = {
             userSettings = httpServer;
             httpServer = null;
         }
-
-        storage.init(userSettings.userDir, 'settings_' + require('os').hostname() + '.json', userSettings)
-            .then(function() {
-                return setting_manager.load(storage)
-            });
-
         server = httpServer;
+
+        storage.init(userSettings.userDir, 'settings_' + require('os').hostname() + '.json', userSettings);
+        setting_manager.load(storage).done(function() {
+            var current_settings = setting_manager.getGlobalSetting();
+        });              
+        
         // Initialize all the modules from the settings
         // TODO: not implemented yet
-        // configurator
-        var current_settings = setting_manager.getGlobalSetting();
+        // configurator        
         configurator.init(httpServer, this, userSettings);
-
-
-
+        
         // log the step
         console.log("OPEN_ACCESS initialized successfully.");
         return when.resolve();
+    },
+    restart: function(new_setting) {
+
+    },
+    isStarted: function() {
+        return started;
     },
     start: function() {
         started = true;
         var self = this;
 
         storage.addConfigFileListener(function(_path, stats) {
-            if (path.basename(_path) === storage.getGlobalSettingsFile()) {
-                var new_settings = setting_manager.load(storage);
-                var state = isStarted();
-                if (state) {
+            //if (path.basename(_path) === storage.getGlobalSettingsFile()) {
+                var new_settings = setting_manager.loadSync(storage);
+                if (new_settings && started) {
                     configurator.stop();
-                }
-                configurator.init(httpServer, new_settings);
-                if (state) {
+                    inputbus.removeAllListeners();
+                    outputbus.removeAllListeners();
+                    configurator.init(server, self, new_settings);
                     configurator.start();
                 }
-            }
+            //}
         });
 
         // Start all module
         configurator.start();
-
-
-        // TODO: Start all Module
-        /*
-        return runtime.start().then(function() {
-            // Callback
-        });*/
+        storage.startListening();
         console.log("OPEN_ACCESS start successfully.");
         return when.resolve();
     },
@@ -105,19 +101,8 @@ module.exports = {
         started = false;
         // Stop all modules
         configurator.stop();
-
-        /*
-        return runtime.stop().then(function() {
-            if (apiEnabled) {
-                return swagger.stop();
-            }
-        })*/
         console.log("OPEN_ACCESS stopped successfully.");
         return when.resolve();
-    },
-
-    restart: function(new_setting) {
-
     },
 
     //nodes: runtime.nodes,
@@ -131,15 +116,13 @@ module.exports = {
     outputbus: outputbus,
     configurationbus: configurationbus,
     engine: engine,
-    isStarted: function() {
-        return started
-    },
+    
     //comms: swagger.comms,
     //library: swagger.library,
     //auth: swagger.auth,
-    getConfigurator: function() { return configurator },
-    getSettingManager: function() { return setting_manager },
-    getStorage: function() { return storage },
-    getApp: function() { return this },
-    getServer: function() { return server }
+    getConfigurator: function() { return configurator; },
+    getSettingManager: function() { return setting_manager; },
+    getStorage: function() { return storage; },
+    getApp: function() { return this; },
+    getServer: function() { return server; }
 };

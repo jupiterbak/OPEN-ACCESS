@@ -26,48 +26,57 @@
  **/
 'use strict';
 
-var swagger_app = require('connect')();
-var _http = require('http');
-var swaggerTools = require('swagger-tools');
+var express = require('express'),
+  router = express.Router(),
+  bodyParser = require('body-parser'),
+  swaggerUi = require('swagger-ui-express');
+var swagger_app = express();
+var swagger_server = null;
 var jsyaml = require('js-yaml');
 var fs = require('fs');
 var _serverPort = 8088;
 var when = require('when');
 var _app = null;
-var _server = null;
+var _apiSettings = null;
+
+// services
+const setting_service = require('./controllers/SettingService');
+const variable_service = require('./controllers/VariablesService');
+const value_stream_service = require('./controllers/ValueStreamService');
 
 module.exports = {
-    app: _app,
+    
+    server: swagger_app,
     init: function(app, apiSettings) {
         _app = app;
         _serverPort = apiSettings.port || _serverPort;
-        // swaggerRouter configuration
-        var options = {
-            swaggerUi: __dirname + '/swagger.json',
-            controllers: __dirname + '/controllers',
-            useStubs: process.env.NODE_ENV === 'development' ? true : false // Conditionally turn on stubs (mock mode)
-        };
-
+        _apiSettings = apiSettings;
         // The Swagger document (require it, build it programmatically, fetch it from a URL, ...)
         var spec = fs.readFileSync(__dirname + '/swagger/swagger.yaml', 'utf8');
         var swaggerDoc = jsyaml.safeLoad(spec);
 
-        // Initialize the Swagger middleware
-        swaggerTools.initializeMiddleware(swaggerDoc, function(middleware) {
-            // Interpret Swagger resources and attach metadata to request - must be first in swagger-tools middleware chain
-            swagger_app.use(middleware.swaggerMetadata());
+        //rest API requirements
+        swagger_app.use(bodyParser.urlencoded({
+            extended: true
+        }));
+        swagger_app.use(bodyParser.json());
 
-            // Validate Swagger requests
-            swagger_app.use(middleware.swaggerValidator());
+        router.route('/setting')
+            .get(setting_service.getSetting)
+            .post(setting_service.setSetting);
 
-            // Route validated requests to appropriate controller
-            swagger_app.use(middleware.swaggerRouter(options));
+        router.route('/variables')
+            .get(variable_service.getAvialableVariables);
 
-            // Serve the Swagger documents and Swagger UI
-            swagger_app.use(middleware.swaggerUi());
-        });
+        router.route('/valuestream')
+            .get(value_stream_service.getValueStream);
 
-        _server = _http.createServer(swagger_app);
+        // swaggerRouter configuration
+        var options = {
+            explorer: true
+        };
+        swagger_app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc, options));
+        swagger_app.use('/api/v1', router);
 
         // log the step
         _app.engine.log.info("Config API initialized successfully.");
@@ -76,23 +85,25 @@ module.exports = {
     start: function() {
         // Start all module
         // Start the server
-        _server.listen(_serverPort, function() {
-            _app.engine.log.info('Config API is listening on port ' + _serverPort + ' (http://localhost:' + _serverPort + ')');
-            _app.engine.log.info('Config API Swagger-ui is available on http://localhost:' + _serverPort + '/docs', _serverPort);
+        swagger_server = swagger_app.listen(_serverPort, function() {
+            _app.engine.log.info('Config API is listening on port ' + _serverPort + ' (http://localhost:' + _serverPort + '/api/v1)');
+            _app.engine.log.info('Config API Swagger-Ui is available on http://localhost:' + _serverPort + '/api-docs');
         });
 
         _app.engine.log.info("Configurator start successfully.");
         return when.resolve();
     },
     stop: function() {
-        // Stop all modules
-
         // Close the server
-        _server.close(function() {
-            _app.engine.log.info('Config API is closing the swagger server.');
-        });
-
-        _app.engine.log.info("Config API stopped successfully.");
+        if(swagger_server){
+            swagger_server.close(function() {
+                _app.engine.log.info("Config API stopped successfully.");
+            });
+        }        
+        _app.engine.log.info('Config API is closing the swagger server.');
+        
         return when.resolve();
-    }
+    },
+    app: _app,
+    settings: _apiSettings
 };

@@ -56,7 +56,14 @@ var persistentSettings = {
         storage = _storage;
         return storage.getSettings().then(function(_settings) {
             globalSettings = _settings;
+            return _settings;
         });
+    },
+    loadSync: function(_storage) {
+        storage = _storage;
+        const _set = storage.getSettingsSync();
+        globalSettings = _set;
+        return _set;
     },
     get: function(prop) {
         if (userSettings.hasOwnProperty(prop)) {
@@ -110,7 +117,7 @@ var persistentSettings = {
         globalSettings = null;
         storage = null;
     },
-    getGlobalSetting: function() { return globalSettings },
+    getGlobalSetting: function() { return globalSettings; },
     userSettings: userSettings
 };
 

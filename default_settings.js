@@ -134,12 +134,11 @@ module.exports = {
     },
 
     api: [
-        // {
-        //     name: "ConfigApi",
-        //     type: "Swagger",
-        //     port: 55554
-        // }
-        // ,
+        {
+            name: "ConfigApi",
+            type: "Swagger",
+            port: 55554
+        },
         // {
         //     name: "EberleinApi",
         //     type: "Swagger",
@@ -151,11 +150,11 @@ module.exports = {
     southbounds: {
         // Only dummy is currently supported
         dummy: {
-            id: "67435124",
-            name: "S_Dummy",
+            id: "dummySouthbound",
+            name: "dummySouthbound",
             type: "dummyClient",
             level: "info",
-            modulesetting: { interval: 1000 },
+            modulesetting: { interval: 10000 },
             outputs_variables: [{
                     name: "I",
                     datatype: "real",
@@ -177,37 +176,37 @@ module.exports = {
             ],
             system: false
         },
-        example_config_opcua_client_object: {
-            id: "OPCUAClientObject1", // Unique ID of the module in the global configuration
-            name: "OPCUAClientObject1", // Name of the module instance.
-            type: "OPCUAClientObject", // Type of the module, should always be "OPCUAClientObject" in order to use this module
-            modulesetting: {
-                server_adress: "localhost", // Address of the remote opc ua server
-                port: 48022, // Remote Port of the opc ua server module
-                interval: 100, // default monitoring interval
-                object_name: "OPCUAClientObject"
-            },
-            outputs_variables: [ // The output variables specify how to interpret and map the data received
-                {
-                    name: "Demo.Dynamic.Scalar.Double", // Variable Name
-                    nodeId: {
-                        ns: 4, // NamespaceIndex of the variable to monitor
-                        nid: "Demo.Dynamic.Scalar.Double" // NodeId of the opcua variable
-                    },
-                    interval: 100, // Monitoring interval
-                    default: 0.0 // Default value
-                },
-                {
-                    name: "Demo.Dynamic.Scalar.Float", // Variable Name
-                    nodeId: {
-                        ns: 4, // NamespaceIndex of the variable to monitor
-                        nid: "Demo.Dynamic.Scalar.Float" // NodeId of the opcua variable
-                    },
-                    interval: 100, // Monitoring interval
-                    default: 0.0 // Default value
-                }
-            ]
-        }
+        // example_config_opcua_client_object: {
+        //     id: "OPCUAClientObject1", // Unique ID of the module in the global configuration
+        //     name: "OPCUAClientObject1", // Name of the module instance.
+        //     type: "OPCUAClientObject", // Type of the module, should always be "OPCUAClientObject" in order to use this module
+        //     modulesetting: {
+        //         server_adress: "localhost", // Address of the remote opc ua server
+        //         port: 48022, // Remote Port of the opc ua server module
+        //         interval: 100, // default monitoring interval
+        //         object_name: "OPCUAClientObject"
+        //     },
+        //     outputs_variables: [ // The output variables specify how to interpret and map the data received
+        //         {
+        //             name: "Demo.Dynamic.Scalar.Double", // Variable Name
+        //             nodeId: {
+        //                 ns: 4, // NamespaceIndex of the variable to monitor
+        //                 nid: "Demo.Dynamic.Scalar.Double" // NodeId of the opcua variable
+        //             },
+        //             interval: 100, // Monitoring interval
+        //             default: 0.0 // Default value
+        //         },
+        //         {
+        //             name: "Demo.Dynamic.Scalar.Float", // Variable Name
+        //             nodeId: {
+        //                 ns: 4, // NamespaceIndex of the variable to monitor
+        //                 nid: "Demo.Dynamic.Scalar.Float" // NodeId of the opcua variable
+        //             },
+        //             interval: 100, // Monitoring interval
+        //             default: 0.0 // Default value
+        //         }
+        //     ]
+        // },
         // "Example_MV440ImageStreamer":{
         //     id: "MV440ImageStreamer1",		// Unique ID of the module in the global configuration
         //     name: "MV440ImageStreamer1", 	// Name of the module instance.
@@ -401,6 +400,26 @@ module.exports = {
         // }
     },
     northbounds: {
+        dummy_config: {
+            id: "dummyNorthBound", 		// Unique ID of the module in the global configuration
+            name: "dummyNorthBound", 	    // Name of the module instance.
+            type: "dummyServer", 	    // Type of the module, should always be "dummyServer" in order to use this module
+            modulesetting: {},
+            inputs_variables: [ 	// The output variables specify the variables to generate
+                {
+                    name: "P1", 	// Variable Name
+                    datatype: "real", 				// Type of the data to read: "real", "int", "byte"
+                    si_unit: "W", 					// Unit of the data variable. It is optional
+                    default: 0.0 					// Default value
+                },
+                {
+                    name: "P2",
+                    datatype: "real",
+                    si_unit: "W",
+                    default: 0.0
+                }
+            ]
+        },
         // example_config: {
         //     id: "AMQPOutputStreamer1", // Unique ID of the module in the global configuration
         //     name: "AMQPOutputStreamer1", // Name of the module instance.
@@ -697,23 +716,23 @@ module.exports = {
         //     system: false
         // },
 
-        mindsphere_config: {
-            id: "MindsphreLibStreamer1", // Unique ID of the module in the global configuration
-            name: "MindsphreLibStreamer0", // Name of the module instance.
-            type: "MindsphreLibStreamer", // Type of the module, should always be "MindsphreLibStreamer" in order to use this module
-            modulesetting: {
-                configuration: "ConveyorAssetCredential.json", // JSON Configuration of the agent
-                object_name: 'OPCUAClientObject', // Name of the object that holds all values. This attribute is required
-                datapoint_mapping: [
-                    { "dataPointId": "1557293223444", "qualityCode": "0", "name": "Demo.Dynamic.Scalar.Double" },
-                    { "dataPointId": "1557294045308", "qualityCode": "0", "name": "Demo.Dynamic.Scalar.Float" },
-                    { "dataPointId": "1557293154631", "qualityCode": "0", "name": "Demo.Dynamic.Scalar.Boolean" },
-                    { "dataPointId": "1557293273534", "qualityCode": "0", "name": "Demo.Dynamic.Scalar.Boolean" },
-                    { "dataPointId": "1557293295599", "qualityCode": "0", "name": "Demo.Dynamic.Scalar.Boolean" }
-                ],
-                interval: 1000 // Time interval (ms) to transfer the data to the cloud
-            }
-        }
+        // mindsphere_config: {
+        //     id: "MindsphreLibStreamer1", // Unique ID of the module in the global configuration
+        //     name: "MindsphreLibStreamer0", // Name of the module instance.
+        //     type: "MindsphreLibStreamer", // Type of the module, should always be "MindsphreLibStreamer" in order to use this module
+        //     modulesetting: {
+        //         configuration: "ConveyorAssetCredential.json", // JSON Configuration of the agent
+        //         object_name: 'OPCUAClientObject', // Name of the object that holds all values. This attribute is required
+        //         datapoint_mapping: [
+        //             { "dataPointId": "1557293223444", "qualityCode": "0", "name": "Demo.Dynamic.Scalar.Double" },
+        //             { "dataPointId": "1557294045308", "qualityCode": "0", "name": "Demo.Dynamic.Scalar.Float" },
+        //             { "dataPointId": "1557293154631", "qualityCode": "0", "name": "Demo.Dynamic.Scalar.Boolean" },
+        //             { "dataPointId": "1557293273534", "qualityCode": "0", "name": "Demo.Dynamic.Scalar.Boolean" },
+        //             { "dataPointId": "1557293295599", "qualityCode": "0", "name": "Demo.Dynamic.Scalar.Boolean" }
+        //         ],
+        //         interval: 1000 // Time interval (ms) to transfer the data to the cloud
+        //     }
+        // }
     },
     engine: {
         settings: {},
@@ -725,8 +744,8 @@ module.exports = {
                 author: "Jupiter Bakakeu",
                 version: "0.0.0.1",
                 containers: {
-                    sseese: {
-                        id: "sseese",
+                    dummy_container: {
+                        id: "dummy_container",
                         name: "MyContainer",
                         type: "MULT2",
                         inputs: [{
@@ -791,29 +810,29 @@ module.exports = {
                             variable: "P2"
                         }]
                     },
-                    OBJECT_FORWARD: {
-                        id: "OPCUAClientObject_FORWARD",
-                        name: "OPCUAClientObject_FORWARD",
-                        type: "FORWARDOBJECT",
-                        inputs: [{
-                            name: "a",
-                            label: "",
-                            datatype: "object",
-                            si_unit: "-",
-                            default: {},
-                            type: "base_input",
-                            variable: "OPCUAClientObject"
-                        }],
-                        outputs: [{
-                            name: "b",
-                            label: "",
-                            datatype: "object",
-                            si_unit: "-",
-                            default: {},
-                            type: "base_output",
-                            variable: "OPCUAClientObject"
-                        }]
-                    },
+                    // OBJECT_FORWARD: {
+                    //     id: "OPCUAClientObject_FORWARD",
+                    //     name: "OPCUAClientObject_FORWARD",
+                    //     type: "FORWARDOBJECT",
+                    //     inputs: [{
+                    //         name: "a",
+                    //         label: "",
+                    //         datatype: "object",
+                    //         si_unit: "-",
+                    //         default: {},
+                    //         type: "base_input",
+                    //         variable: "OPCUAClientObject"
+                    //     }],
+                    //     outputs: [{
+                    //         name: "b",
+                    //         label: "",
+                    //         datatype: "object",
+                    //         si_unit: "-",
+                    //         default: {},
+                    //         type: "base_output",
+                    //         variable: "OPCUAClientObject"
+                    //     }]
+                    // },
                     // ImageFiles_FORWARD: {
                     //     id: "ImageFiles_FORWARD",
                     //     name: "ImageFiles_FORWARD",

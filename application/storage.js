@@ -168,19 +168,22 @@ var localfilesystem = {
         var ffBase = fspath.basename(configFullPath, ffExt);
         var ffDir = fspath.dirname(configFullPath);
 
+        return when.resolve();
+    },
+    startListening: function(){
         // Monitor the changes of the global file
-        // watcher = chokidar.watch(globalSettingsFile, {
-        //     ignored: /[\/\\]\./,
-        //     persistent: true
-        // });
-        //
-        // watcher.on('change', function(path, stats){
-        //     configChangeListener.forEach(function(cb){
-        //         cb(path,stats);
-        //     });
-        // });
-
-        return when.all(promises);
+        watcher = chokidar.watch(globalSettingsFile, {
+            persistent: true
+        });
+        
+        watcher.on('change', function(path, stats){
+            //console.log('File', path, 'changed size to', stats.size);
+            if(stats.size > 0){
+                configChangeListener.forEach(function(cb){
+                    cb(path,stats);
+                });
+            }            
+        });
     },
     getSettings: function() {
         return when.promise(function(resolve, reject) {
@@ -197,10 +200,17 @@ var localfilesystem = {
         })
     },
     saveSettings: function(settings) {
-        if (settings.readOnly) {
+        if (settings.readOnly){
             return when.resolve();
         }
-        return writeFile(globalSettingsFile, JSON.stringify(settings, null, 1));
+        return writeFile(globalSettingsFile, JSON.stringify(settings, null, 1)).done(function() {
+            // configChangeListener.forEach(function(cb){
+            //     cb(globalSettingsFile,null);
+            // });
+        });
+    },
+    getSettingsSync: function() {
+        return JSON.parse(fs.readFileSync(globalSettingsFile, 'utf8'));
     },
     addConfigFileListener: function(cb) {
         configChangeListener.push(cb);
