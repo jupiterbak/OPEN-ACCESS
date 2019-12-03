@@ -76,6 +76,7 @@ var persistentSettings = {
     },
 
     set: function(prop, value) {
+        this.loadSync(storage);
         if (globalSettings === null) {
             throw new Error(log.info("settings.not-available"));
         }
@@ -86,6 +87,20 @@ var persistentSettings = {
             return when.resolve();
         } catch (err) {
             return storage.saveSettings(globalSettings);
+        }
+    },
+    setFromAPI: function(prop, value) {
+        this.loadSync(storage);
+        if (globalSettings === null) {
+            throw new Error(log.info("settings.not-available"));
+        }
+        var current = globalSettings[prop];
+        globalSettings[prop] = value;
+        try {
+            assert.deepEqual(current, value);
+            return when.resolve();
+        } catch (err) {
+            return storage.saveSettingsFromAPI(globalSettings);
         }
     },
     delete: function(prop) {

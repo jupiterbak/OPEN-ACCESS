@@ -50,7 +50,7 @@ exports.setSetting = function (args, res, next) {
     var value = args.body;
     try {
         if(key){            
-            setting_manager.set(key,value);
+            setting_manager.setFromAPI(key,value);
         }
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({

@@ -196,8 +196,8 @@ var localfilesystem = {
                     }
                 }
                 return resolve({});
-            })
-        })
+            });
+        });
     },
     saveSettings: function(settings) {
         if (settings.readOnly){
@@ -207,6 +207,16 @@ var localfilesystem = {
             // configChangeListener.forEach(function(cb){
             //     cb(globalSettingsFile,null);
             // });
+        });
+    },
+    saveSettingsFromAPI: function(settings) {
+        if (settings.readOnly){
+            return when.resolve();
+        }
+        return writeFile(globalSettingsFile, JSON.stringify(settings, null, 1)).done(function() {
+            configChangeListener.forEach(function(cb){
+                cb(globalSettingsFile,null);
+            });
         });
     },
     getSettingsSync: function() {
