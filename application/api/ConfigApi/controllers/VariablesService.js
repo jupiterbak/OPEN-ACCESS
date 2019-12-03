@@ -46,6 +46,10 @@ exports.getAvialableVariables = function (args, res, next) {
         }
     }
 
+    if(args.query.key){
+        rslts = rslts.filter(itemd => itemd.id === args.query.key);
+    }
+
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(rslts || {}, null, 2));
 }
