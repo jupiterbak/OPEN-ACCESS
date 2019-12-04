@@ -93,7 +93,7 @@ npm start
 
 After a sucessfull startup the following output should be printed. Please notice the information that all modules have been sucessfully initialized and started.
 
-```
+```console
 
 C:\GitHub\OPEN-ACCESS>npm start
 
