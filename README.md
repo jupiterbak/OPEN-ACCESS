@@ -1,20 +1,14 @@
-# OPEN-ACCESS (Framework for Edge)
+# OPEN-ACCESS
 
-**OPEN-ACCESS** is an open source system extending containerized application orchestration and device management to hosts at the Edge. It is built upon NodeJS and provides core infrastructure support for application deployment and datastzream synchronization between cloud and edge. It also supports multiple communation protocols (AMQP, MQTT, OPCUA, OPCUA pub/Sub, S7-Online, LCOM, ModBus-TCP, Mindsphere-Conect, etc...) and allows developers to author custom logic and enable resource constrained device communication at the Edge.
+***OPEN-ACCESS*** is an open source framework extending containerized application orchestration and device management to hosts at the Edge. It is built upon NodeJS and provides core infrastructure support for application deployment and datastream synchronization between cloud and edge. It also supports multiple communation protocols (AMQP, MQTT, OPCUA, OPCUA pub/Sub, S7-Online, LCOM, ModBus-TCP, Mindsphere-Conect, etc...) and allows developers to author custom logic and enable resource constrained device communication at the Edge.
 
 
 ## Introduction
 
-![Image of Yaktocat](docs/images/Runtime_Engine.png){: .shadow}
-***Fig. 1:*** *Architecture of a runtime engine.* The southbound modules are
-responsible for raw data acquisition from external systems and the data
-collected are published to the input bus. From there the collected data are
-processed by containers that encapsulate a data analytics algorithm in the
-form of a digital acyclic graph. The containers are orchestrated and monitored
-by the runtime engine and the computation results are published to the
-output bus. The nothbound modules are responsible for the transmission of
-the computation results to an external system. The configurator stores and
-manages the configuration data of all elements of the runtime engine. A more detailed description of the architecture of OPEN-ACCESS is provided in the corresponding [paper](#citation).
+A more detailed description of the architecture of OPEN-ACCESS is provided in the corresponding [paper](#citation).
+
+![Image of Yaktocat](docs/images/Runtime_Engine.png)
+***Fig. 1:*** *Architecture of a runtime engine.* 
 
 As illustrated in Fig. 1, OPEN-ACESS is modularly implemented using NodeJs (Javascript) and is composed of the following components:
   
@@ -208,4 +202,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Jupiter Bakakeu - [@JBakakeu](https://twitter.com/JBakakeu) - jupiter.bakakeu@gmail.com
 
-Project Link: [https://github.com/jupiterbak/FAPS_DEMONSTRATOR](https://github.com/jupiterbak/FAPS_DEMONSTRATOR)
+Project Link: [https://github.com/jupiterbak/OPEN-ACCESS](https://github.com/jupiterbak/OPEN-ACCESS)
