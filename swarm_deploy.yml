@@ -1,0 +1,22 @@
+version: "3.3"
+
+services:
+  screen_service:
+    build: .
+    restart: always
+    image: open_access:latest
+    ports:
+      - "55554:55554"
+    networks: 
+      - backend
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+        - node.hostname == mykros
+
+networks:
+  backend:
+    driver: "overlay"
+    attachable: true

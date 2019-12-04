@@ -90,7 +90,7 @@ module.exports = {
             _app.engine.log.info('Config API Swagger-Ui is available on http://localhost:' + _serverPort + '/api-docs');
         });
 
-        _app.engine.log.info("Configurator start successfully.");
+        _app.engine.log.info("Config API started successfully.");
         return when.resolve();
     },
     stop: function() {

@@ -148,7 +148,7 @@ module.exports = {
         return runtime.start().then(function() {
             // Callback
         });*/
-        app.engine.log.info("Configurator start successfully.");
+        app.engine.log.info("Configurator started successfully.");
         return when.resolve();
     },
     stop: function() {

@@ -1,0 +1,14 @@
+version: "2.0"
+
+services:
+  screen_service:
+    build: .
+    restart: always
+    ports:
+      - "55554:55554"
+      - "8090:8090"
+    networks: 
+      - backend
+
+networks:
+  backend:
