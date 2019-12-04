@@ -8,6 +8,7 @@
 A more detailed description of the architecture of OPEN-ACCESS is provided in the corresponding [paper](#citation).
 
 ![Image of Yaktocat](docs/images/Runtime_Engine.png)
+
 ***Fig. 1:*** *Architecture of a runtime engine.* 
 
 As illustrated in Fig. 1, OPEN-ACESS is modularly implemented using NodeJs (Javascript) and is composed of the following components:
