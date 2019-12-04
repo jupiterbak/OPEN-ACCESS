@@ -60,7 +60,7 @@ of the runtime engine and offers an interface to
 manipulate the configuration of the algorithms, allowing an
 online fine-tuning.
 
-## Installation Requirements
+## Requirements
 
 
 * NodeJs : The Backend requires NodeJs and a node global package npm.
