@@ -161,7 +161,7 @@ docker stack deploy --compose-file swarm_deploy.yml OPEN_ACCESS_STACK
 <!-- USAGE -->
 ## Usage
 
-In order to configure OPEN-ACCESS, the file ***default_settings.js*** has to be configured appropriately. For example the following configurration instantiate a S7-Online Client on the southbound to read some variable values on a Siemens PLC.
+In order to configure OPEN-ACCESS, the file ***default_settings.js*** has to be configured appropriately. For example the following configuration instantiate a S7-Online Client on the southbound to read some variable values on a Siemens PLC.
 
 
 ```javascript
