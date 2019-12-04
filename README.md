@@ -1,6 +1,6 @@
 # OPEN-ACCESS
 
-***OPEN-ACCESS*** is an open source framework extending containerized application orchestration and device management to hosts at the Edge. It is built upon NodeJS and provides core infrastructure support for application deployment and datastream synchronization between cloud and edge. It also supports multiple communation protocols (AMQP, MQTT, OPCUA, OPCUA pub/Sub, S7-Online, LCOM, ModBus-TCP, Mindsphere-Conect, etc...) and allows developers to author custom logic and enable resource constrained device communication at the Edge.
+***OPEN-ACCESS*** is an open source framework extending containerized application orchestration and device management to hosts at the Edge. It is built upon NodeJS and provides core infrastructure support for application deployment and datastream synchronization between cloud and edge. It also supports multiple communation protocols (AMQP, MQTT, REST, OPCUA, OPCUA pub/Sub, S7-Online, LCOM, ModBus-TCP, Mindsphere-Conect, ROS Messages, etc...) and allows developers to author custom logic and enable resource constrained device communication at the Edge.
 
 
 ## Introduction
@@ -125,7 +125,7 @@ OPEN_ACCESS start successfully.
 
 The OPEN ACCESS Rest API is now accessible at [http://localhost:55554](http://localhost:55554). And the Documentation at [http://localhost:55554/docs](http://localhost:55554/docs)
 
-## Deploy as a Microservice using Docker[Swarm]
+### Deploy as a Microservice using Docker[Swarm]
 
 You can also deploy OPEN-ACCESS as a microservice inside a Docker container:
 
@@ -156,6 +156,50 @@ sudo docker-compose build
 
 ```bash
 docker stack deploy --compose-file swarm_deploy.yml OPEN_ACCESS_STACK
+```
+
+<!-- USAGE -->
+## Usage
+
+In order to configure OPEN-ACCESS, the file **default_settings.js" has to be configured appropriately. For example the following configurration instantiate a S7-Online Client on the southbound to read some variable values on a Siemens PLC.
+
+
+```javascript
+
+example_config: {
+    id: "SNAP7ClientDemo",      // Unique ID of the module in the global configuration
+    name: "SNAP7ClientDemo",    // Name of the module instance.
+    type: "SNAP7Client",        // Type of the module, should always be "SNAP7Client" in order to use this module
+    modulesetting: {
+        ip: '192.168.1.16',     // Remote IP-Address of the PLC server module
+        rack: 0,                // PLC Rack number
+        slot: 1,                // PLC Slot number
+        interval: 1000,         // Interval to pool the data
+    },
+    outputs_variables: [        // The output variables specify how to interpret and map the data received
+        {
+            name: "Portal_Spannung_L1_N",   // Variable that will hold the serialized value comming from the PLC.
+            datatype: "real",   // Type of the data to read: "real", "int", "byte"
+            si_unit: "V",       // Unit of the data variable. It is optional
+            area: 0x81,         // Area identifier (0x81 Process inputs, 0x82 Process outputs, 0x83	Merkers, 0x84 DB, 0x1C Counters,0x1D Timers)
+            dbNumber: 21,       // DB number if area = 0x84, otherwise ignored
+            start: 0,           // Offset to start
+            amount: 100,        // Amount of words to read
+            wordLen: 0x08       // Word size (0x01 Bit (inside a word), 0x02 Byte (8 bit), 0x04	Word (16 bit), 0x06	Double Word (32 bit), 0x08	Real (32 bit float), 0x1C	Counter (16 bit), 0x1D	Timer (16 bit))
+        },
+        {
+            name: "Portal_Spannung_L3_N", // Variable that will hold the serialized value comming from the PLC.
+            datatype: "real",   // Type of the data to read: "real", "int", "byte"
+            si_unit: "V",       // Unit of the data variable. It is optional
+            area: 0x81,         // Area identifier (0x81 Process inputs, 0x82 Process outputs, 0x83	Merkers, 0x84 DB, 0x1C Counters,0x1D Timers)
+            dbNumber: 21,       // DB number if area = 0x84, otherwise ignored
+            start: 0,           // Offset to start
+            amount: 100,        // Amount of words to read
+            wordLen: 0x08       // Word size (0x01 Bit (inside a word), 0x02 Byte (8 bit), 0x04	Word (16 bit), 0x06	Double Word (32 bit), 0x08	Real (32 bit float), 0x1C	Counter (16 bit), 0x1D	Timer (16 bit))
+        }
+    ]
+}
+
 ```
 
 <!-- CITATION -->
