@@ -10,7 +10,7 @@
     "Jupiter Bakakeu"
   ],
   "dependencies": {
-    "@mindconnect/mindconnect-nodejs": "^3.3.0",
+    "@mindconnect/mindconnect-nodejs": "^3.8.0",
     "amqplib": "^0.5.3",
     "async": "^2.6.2",
     "backoff": "^2.5.0",
