@@ -1,5 +1,7 @@
 # OPEN-ACCESS
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/42514b2f9f28409e90eea3194d507200)](https://app.codacy.com/manual/jupiterbak2002/OPEN-ACCESS?utm_source=github.com&utm_medium=referral&utm_content=jupiterbak/OPEN-ACCESS&utm_campaign=Badge_Grade_Dashboard)
+
 ***OPEN-ACCESS*** is an open source framework extending containerized application orchestration and device management to hosts at the Edge. It is built upon NodeJS and provides core infrastructure support for application deployment and datastream synchronization between cloud and edge. It also supports multiple communation protocols (AMQP, MQTT, REST, OPCUA, OPCUA pub/Sub, S7-Online, LCOM, ModBus-TCP, Mindsphere-Conect, ROS Messages, etc...) and allows developers to author custom logic and enable resource constrained device communication at the Edge.
 
 ## Introduction
