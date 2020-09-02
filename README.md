@@ -2,14 +2,13 @@
 
 ***OPEN-ACCESS*** is an open source framework extending containerized application orchestration and device management to hosts at the Edge. It is built upon NodeJS and provides core infrastructure support for application deployment and datastream synchronization between cloud and edge. It also supports multiple communation protocols (AMQP, MQTT, REST, OPCUA, OPCUA pub/Sub, S7-Online, LCOM, ModBus-TCP, Mindsphere-Conect, ROS Messages, etc...) and allows developers to author custom logic and enable resource constrained device communication at the Edge.
 
-
 ## Introduction
 
 A more detailed description of the architecture of OPEN-ACCESS is provided in the corresponding [paper](#citation).
 
 ![Image of Yaktocat](docs/images/Runtime_Engine.png)
 
-***Fig. 1:*** *Architecture of a runtime engine.* 
+***Fig. 1:*** *Architecture of a runtime engine.*
 
 As illustrated in Fig. 1, OPEN-ACESS is modularly implemented using NodeJs (Javascript) and is composed of the following components:
   
@@ -26,6 +25,7 @@ of the connected systems or as a server to receive published
 data. Presented like this, each adapter instance represents a data stream. All data streams are integrated by the input bus, which the runtime engine can access.
   
 ### Runtime Engine
+
 The ***runtime engine*** is responsible for the execution of
 the data analytics algorithms defined in containers. Each
 container is assigned a priority, a computation cycle time and
@@ -62,13 +62,11 @@ online fine-tuning.
 
 ## Requirements
 
-
-* NodeJs : The Backend requires NodeJs and a node global package npm.
-* Git
-* Dockers: For a container installation, Docker is required. Please refer to the docker documentation for docker installation.
+* NodeJs : The Backend requires NodeJs and a node global package npm.  
+* Git  
+* Dockers: For a container installation, Docker is required. Please refer to the docker documentation for docker installation.  
 
 ## Installation
-
 
 ### NodeJS
 
@@ -126,7 +124,7 @@ OPEN_ACCESS start successfully.
 
 The OPEN ACCESS Rest API is now accessible at [http://localhost:55554](http://localhost:55554). And the Documentation at [http://localhost:55554/docs](http://localhost:55554/docs)
 
-### Deploy as a Microservice using Docker[Swarm]
+### Deploy as a Microservice using Docker
 
 You can also deploy OPEN-ACCESS as a microservice inside a Docker container:
 
@@ -163,7 +161,6 @@ docker stack deploy --compose-file swarm_deploy.yml OPEN_ACCESS_STACK
 ## Usage
 
 In order to configure OPEN-ACCESS, the file ***default_settings.js*** has to be configured appropriately. For example the following configuration instantiate a S7-Online Client on the southbound to read some variable values on a Siemens PLC.
-
 
 ```javascript
 
@@ -209,7 +206,7 @@ example_config: {
 
 If you use this code for your research, please cite our paper
 
-```
+```latex
 
 @INPROCEEDINGS{8607483,
     author={J. {Bakakeu} and J. {Fuchs} and T. {Javied} and M. {Brossog} and J. {Franke} and H. {Klos} and W. {Eberlein} and S. {Tolksdorf} and J. {Peschke} and L. {Jahn}},
@@ -231,11 +228,11 @@ If you use this code for your research, please cite our paper
 
 Any contributions you make are **greatly appreciated**.
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+ 1. Fork the Project
+ 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+ 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+ 4. Push to the Branch (`git push origin feature/AmazingFeature`)
+ 5. Open a Pull Request
 
 <!-- LICENSE -->
 ## License
@@ -247,4 +244,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Jupiter Bakakeu - [@JBakakeu](https://twitter.com/JBakakeu) - jupiter.bakakeu@gmail.com
 
-Project Link: [https://github.com/jupiterbak/OPEN-ACCESS](https://github.com/jupiterbak/OPEN-ACCESS)
+Project Link: [https://github.com/jupiterbak/OPEN-ACCESS](<https://github.com/jupiterbak/OPEN-ACCESS>)

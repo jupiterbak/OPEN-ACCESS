@@ -18,7 +18,7 @@ exports.modelsGET = function (args, res, next) {
         "id": "aeiou",
         "display_name": "aeiou",
         "type": "aeiou",
-        "write_mask": 1.3579000000000001069366817318950779736042022705078125
+        "write_mask": 0
     }];
 
     var opcManager = _manager.getSingletonInstance();

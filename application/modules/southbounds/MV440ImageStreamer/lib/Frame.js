@@ -9,7 +9,7 @@ var FRAMETYPE = function (ID, Seq, Version, Flags, Type, data_buffer) {
     };
     this.data = data_buffer;
 
-}
+};
 
 FRAMETYPE.prototype.isValid = function () {
     if (!this.header) return false;
@@ -20,7 +20,7 @@ FRAMETYPE.prototype.isValid = function () {
     if ((!this.header.Flags) || this.header.Flags === 0) return false;
 
     return true;
-}
+};
 
 
 FRAMETYPE.decode = function (data) {
@@ -43,7 +43,8 @@ FRAMETYPE.decode = function (data) {
     if (!frame.isValid()) return null;
 
     return frame;
-}
+};
+
 FRAMETYPE.encode = function (frame) {
     if (!frame.isValid()) return null;
     var buf = Buffer.alloc(16 + frame.header.DataSize);
@@ -59,7 +60,8 @@ FRAMETYPE.encode = function (frame) {
         frame.data.copy(buf, 16, 0, frame.data.length - 1);
     }
     return buf;
-}
+};
+
 FRAMETYPE.decodeHeader = function (data) {
     if (!Buffer.isBuffer(data)) return null;
     if (data.length < 16) return null;
@@ -85,7 +87,8 @@ FRAMETYPE.decodeHeader = function (data) {
     } else {
         return null;
     }
-}
+};
+
 FRAMETYPE.isValidHeader = function (header) {
     if (!header) return false;
 
@@ -95,7 +98,8 @@ FRAMETYPE.isValidHeader = function (header) {
     if ((!header.Flags) || header.Flags === 0) return false;
 
     return true;
-}
+};
+
 FRAMETYPE.FRAMEHEADERID = 0x78315356;
 FRAMETYPE.FRAMEHEADERVERSION = 0x10;
 FRAMETYPE.FRAMEHEADER_SIZE = 16;

@@ -162,7 +162,7 @@ var __start = (this && this.__start) || function(_configurationPath, _timeout, _
                         return __generator(this, function(_a) {
                             switch (_a.label) {
                                 case 0:
-                                    if (values.length == 0 && valuesQueues.length > 0) {
+                                    if (values.length === 0 && valuesQueues.length > 0) {
                                         values = valuesQueues.slice();
                                         valuesQueues = [];
                                     }

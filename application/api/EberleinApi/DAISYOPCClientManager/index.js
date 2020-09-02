@@ -66,7 +66,7 @@ DAISYOPCClient.prototype.connect = function (ip, port, servername,  fCallback) {
         fCallback(err);
         return;
     }
-    if (port === undefined || port == 0) {
+    if (port === undefined || port === 0) {
         err = "Port is not valid.";
         fCallback(err);
         return;
@@ -363,8 +363,8 @@ DAISYOPCClient.prototype.findCMFunctionsObjects = function (startNodeNS, startNo
                 if (browse_result[0].references) {
                     browse_result[0].references.forEach(function (item) {
                         if (
-                            ( item.isForward && item.typeDefinition.namespace == self.targetNameSpace && item.typeDefinition.value == 1099) || // Condition Monitoring Aggregation Function
-                            ( item.isForward && item.typeDefinition.namespace == self.targetNameSpace && item.typeDefinition.value == 1097)    // Condition Monitoring Base Function
+                            ( item.isForward && item.typeDefinition.namespace === self.targetNameSpace && item.typeDefinition.value === 1099) || // Condition Monitoring Aggregation Function
+                            ( item.isForward && item.typeDefinition.namespace === self.targetNameSpace && item.typeDefinition.value === 1097)    // Condition Monitoring Base Function
                         ) {
                             var tmp_key = "" + praefix + "-" + item.browseName.name;
                             var val = {};
@@ -395,9 +395,9 @@ DAISYOPCClient.prototype.findCMFunctionsObjects = function (startNodeNS, startNo
                             fCallback(praefix, item);
 
                         } else if (
-                            ( item.isForward && item.referenceTypeId.namespace == 0 && item.referenceTypeId.value == 47) || //  hasComponent
-                            ( item.isForward && item.referenceTypeId.namespace == 0 && item.referenceTypeId.value == 35) || // organizes
-                            ( item.isForward && item.referenceTypeId.namespace == self.targetNameSpace && item.referenceTypeId.value == 4033)  // hasConditiomMonitoringDomain
+                            ( item.isForward && item.referenceTypeId.namespace === 0 && item.referenceTypeId.value === 47) || //  hasComponent
+                            ( item.isForward && item.referenceTypeId.namespace === 0 && item.referenceTypeId.value === 35) || // organizes
+                            ( item.isForward && item.referenceTypeId.namespace === self.targetNameSpace && item.referenceTypeId.value === 4033)  // hasConditiomMonitoringDomain
                         ) {
                             //console.log("Continue search -->" + item + "\n");
                             self.findCMFunctionsObjects(item.nodeId.namespace, item.nodeId.value, "", results, praefix + "-" + item.browseName.name, fCallback, eCallback);
@@ -433,7 +433,7 @@ DAISYOPCClient.prototype.findCMFunctionsObjectsFeaturesFolder = function (FONode
                 if (browse_result[0].references) {
                     browse_result[0].references.forEach(function (item) {
                         if (
-                            ( item.isForward && item.referenceTypeId.namespace == 0 && item.referenceTypeId.value == 47) // Has Component
+                            ( item.isForward && item.referenceTypeId.namespace === 0 && item.referenceTypeId.value === 47) // Has Component
                         ) {
 
                             if (item.browseName.name === 'Features') {
@@ -531,7 +531,7 @@ DAISYOPCClient.prototype.findCMFunctionsSystemStates = function (FONodeNS, FONod
                 if (browse_result[0].references) {
                     browse_result[0].references.forEach(function (item) {
                         if (
-                            ( item.isForward && item.referenceTypeId.namespace == 0 && item.referenceTypeId.value == 46)
+                            ( item.isForward && item.referenceTypeId.namespace === 0 && item.referenceTypeId.value === 46)
                         ) {
                             var tmp_key_systemState = prafix + "_" + item.browseName.name;
                             var val = {};
@@ -594,7 +594,7 @@ DAISYOPCClient.prototype.findCMFeaturesProperties = function (FNodeNS, FNodeID, 
                 if (browse_result[0].references) {
                     browse_result[0].references.forEach(function (item) {
                         if (
-                            ( item.isForward && item.referenceTypeId.namespace == 0 && item.referenceTypeId.value == 47)
+                            ( item.isForward && item.referenceTypeId.namespace === 0 && item.referenceTypeId.value == 47)
                         ) {
                             var tmp_key_feature_properties = prafix + "_" + item.browseName.name;
                             var val = {};

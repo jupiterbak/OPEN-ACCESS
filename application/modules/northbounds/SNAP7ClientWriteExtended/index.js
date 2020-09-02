@@ -134,7 +134,7 @@ SNAP7ModuleInterface.prototype.start = function() {
                                     } else if (el.datatype === "real") {
                                         buf = Buffer.alloc(4, val);
                                     } else if (el.datatype === "bool") {
-                                        var _tmp_bool = val == 0? 0: (1 << el.bitNumber);
+                                        var _tmp_bool = val === 0? 0: (1 << el.bitNumber);
                                         buf = Buffer.alloc(1, _tmp_bool);
                                     }
                                     
