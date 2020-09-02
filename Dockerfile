@@ -10,5 +10,6 @@ COPY . .
 
 USER node
 EXPOSE 55554
+EXPOSE 8090
 
 CMD ["npm", "start"]

@@ -8,7 +8,8 @@
   },
   "main": "open_access.js",
   "scripts": {
-    "start": "node open_access.js"
+    "start": "node open_access.js",
+    "test": "node open_access.js"
   },
   "contributors": [
     "Jupiter Bakakeu"
