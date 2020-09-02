@@ -2,6 +2,10 @@
   "name": "open_access",
   "version": "0.0.1",
   "description": "First implementation of Open Access",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jupiterbak/OPEN-ACCESS.git"
+  },
   "main": "open_access.js",
   "scripts": {
     "start": "node open_access.js"
@@ -60,6 +64,6 @@
     "Stream"
   ],
   "author": "SP 142",
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "devDependencies": {}
 }
