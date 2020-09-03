@@ -113,7 +113,7 @@ function generate_address_space(addressSpace, xmlFiles, callback) {
         assert(typeof nodeId === "string");
         var m = nodeId.match(reg);
         if (m) {
-            var namespaceIndex = _translateNamespaceIndex(parseInt(m[1]));
+            var namespaceIndex = _translateNamespaceIndex(parseInt(m[1], 10));
             nodeId = "ns=" + namespaceIndex + ";" + m[2];
         }
         return nodeId;
@@ -590,7 +590,7 @@ function generate_address_space(addressSpace, xmlFiles, callback) {
                 finish: function () {
                     this.parent.parent.obj.value = {
                         dataType: DataType.UInt16,
-                        value: parseInt(this.text)
+                        value: parseInt(this.text, 10)
                     }
                 }
             },
@@ -800,7 +800,7 @@ function generate_address_space(addressSpace, xmlFiles, callback) {
             this.obj.valueRank = ec.coerceInt32(attrs.ValueRank) || -1;
             this.obj.arrayDimensions = this.obj.valueRank === -1 ? null : stringToUInt32Array(attrs.ArrayDimensions);
 
-            this.obj.minimumSamplingInterval = attrs.MinimumSamplingInterval ? parseInt(attrs.MinimumSamplingInterval) : 0;
+            this.obj.minimumSamplingInterval = attrs.MinimumSamplingInterval ? parseInt(attrs.MinimumSamplingInterval, 10) : 0;
 
             this.obj.historizing = false;
             this.obj.nodeId = convertToNodeId(attrs.NodeId) || null;

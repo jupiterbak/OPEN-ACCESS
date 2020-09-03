@@ -37,7 +37,7 @@ var DAISYOPCClient = function (ip, port, servername) {
     var options = {
         securityMode: opcua.MessageSecurityMode.get("NONE"),
         securityPolicy: opcua.SecurityPolicy.get("None"),
-        requestedSessionTimeout: 20000000,
+        requestedSessionTimeout: 200000,
         //serverCertificate: serverCertificate,
         defaultSecureTokenLifetime: 40000
     };
@@ -480,7 +480,7 @@ DAISYOPCClient.prototype.findCMFeaturesFunctionsObjects = function (FNodeNS, FNo
                 if (browse_result[0].references) {
                     browse_result[0].references.forEach(function (item) {
                         if (
-                            ( item.isForward && item.referenceTypeId.namespace == 0 && item.referenceTypeId.value == 47) // Has Component
+                            ( item.isForward && item.referenceTypeId.namespace === 0 && item.referenceTypeId.value === 47) // Has Component
                         ) {
                             var tmp_key_feature = prafix + "_" + item.browseName.name;
                             var val = {};
@@ -594,7 +594,7 @@ DAISYOPCClient.prototype.findCMFeaturesProperties = function (FNodeNS, FNodeID, 
                 if (browse_result[0].references) {
                     browse_result[0].references.forEach(function (item) {
                         if (
-                            ( item.isForward && item.referenceTypeId.namespace === 0 && item.referenceTypeId.value == 47)
+                            ( item.isForward && item.referenceTypeId.namespace === 0 && item.referenceTypeId.value === 47)
                         ) {
                             var tmp_key_feature_properties = prafix + "_" + item.browseName.name;
                             var val = {};

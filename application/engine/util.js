@@ -199,7 +199,7 @@ function normalisePropertyExpression(str) {
                 if (start != i) {
                     v = str.substring(start, i);
                     if (/^\d+$/.test(v)) {
-                        parts.push(parseInt(v));
+                        parts.push(parseInt(v, 10));
                     } else {
                         throw new Error("Invalid property expression: unexpected array expression at position " + start);
                     }
