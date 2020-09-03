@@ -1,16 +1,17 @@
 language: node_js
 
 node_js:
+    - node
     - 'lts/*'
 
 os:
     - linux
     - windows
-    - osx
 
 matrix:
     allow_failures:
         - os: osx
+        - node_js: node
 
 before_script:
     - npm install
