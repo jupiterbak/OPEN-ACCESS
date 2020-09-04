@@ -1,5 +1,6 @@
 # OPEN-ACCESS
 
+![GitHub](https://img.shields.io/github/license/jupiterbak/OPEN-ACCESS)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/ac9b23db6ef946eaa093a2bc28876647)](https://www.codacy.com/manual/jupiterbak2002/OPEN-ACCESS?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jupiterbak/OPEN-ACCESS&amp;utm_campaign=Badge_Grade)
 [![Build Status](https://travis-ci.org/jupiterbak/OPEN-ACCESS.svg?branch=master)](https://travis-ci.org/jupiterbak/OPEN-ACCESS)
 [![HitCount](http://hits.dwyl.com/jupiterbak/https://githubcom/jupiterbak/OPEN-ACCESS.svg)](http://hits.dwyl.com/jupiterbak/https://githubcom/jupiterbak/OPEN-ACCESS)
