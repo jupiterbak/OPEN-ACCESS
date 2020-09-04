@@ -1,4 +1,5 @@
 # OPEN-ACCESS
+
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/ac9b23db6ef946eaa093a2bc28876647)](https://www.codacy.com/manual/jupiterbak2002/OPEN-ACCESS?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jupiterbak/OPEN-ACCESS&amp;utm_campaign=Badge_Grade)
 [![Build Status](https://travis-ci.org/jupiterbak/OPEN-ACCESS.svg?branch=master)](https://travis-ci.org/jupiterbak/OPEN-ACCESS)
 [![HitCount](http://hits.dwyl.com/jupiterbak/https://githubcom/jupiterbak/OPEN-ACCESS.svg)](http://hits.dwyl.com/jupiterbak/https://githubcom/jupiterbak/OPEN-ACCESS)
@@ -69,9 +70,9 @@ online fine-tuning.
 
 ## Requirements
 
-  *  NodeJs : The Backend requires NodeJs and a node global package npm.  
-  *  Git  
-  *  Dockers: For a container installation, Docker is required. Please refer to the docker documentation for docker installation.  
+* NodeJs : The Backend requires NodeJs and a node global package npm.  
+* Git  
+* Dockers: For a container installation, Docker is required. Please refer to the docker documentation for docker installation.  
 
 ## Installation
 
