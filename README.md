@@ -69,9 +69,9 @@ online fine-tuning.
 
 ## Requirements
 
-  * NodeJs : The Backend requires NodeJs and a node global package npm.  
-  * Git  
-  * Dockers: For a container installation, Docker is required. Please refer to the docker documentation for docker installation.  
+  *  NodeJs : The Backend requires NodeJs and a node global package npm.  
+  *  Git  
+  *  Dockers: For a container installation, Docker is required. Please refer to the docker documentation for docker installation.  
 
 ## Installation
 
@@ -235,11 +235,11 @@ If you use this code for your research, please cite our paper
 
 Any contributions you make are **greatly appreciated**.
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
 <!-- LICENSE -->
 ## License
