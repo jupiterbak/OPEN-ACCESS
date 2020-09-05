@@ -1,10 +1,11 @@
 # OPEN-ACCESS
 
 ![GitHub](https://img.shields.io/github/license/jupiterbak/OPEN-ACCESS)
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/ac9b23db6ef946eaa093a2bc28876647)](https://www.codacy.com/manual/jupiterbak2002/OPEN-ACCESS?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jupiterbak/OPEN-ACCESS&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/42514b2f9f28409e90eea3194d507200)](https://app.codacy.com/manual/jupiterbak2002/OPEN-ACCESS?utm_source=github.com&utm_medium=referral&utm_content=jupiterbak/OPEN-ACCESS&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://travis-ci.org/jupiterbak/OPEN-ACCESS.svg?branch=master)](https://travis-ci.org/jupiterbak/OPEN-ACCESS)
-[![HitCount](http://hits.dwyl.com/jupiterbak/https://githubcom/jupiterbak/OPEN-ACCESS.svg)](http://hits.dwyl.com/jupiterbak/https://githubcom/jupiterbak/OPEN-ACCESS)
+
 [![OPC UA](http://b.repl.ca/v1/OPC-UA-blue.png)](http://opcfoundation.org/)
+[![HitCount](http://hits.dwyl.com/jupiterbak/https://githubcom/jupiterbak/OPEN-ACCESS.svg)](http://hits.dwyl.com/jupiterbak/https://githubcom/jupiterbak/OPEN-ACCESS)
 ![GitHub last commit](https://img.shields.io/github/last-commit/jupiterbak/OPEN-ACCESS)
 ![GitHub contributors](https://img.shields.io/github/contributors/jupiterbak/OPEN-ACCESS)
 ![GitHub followers](https://img.shields.io/github/followers/jupiterbak?style=social)
