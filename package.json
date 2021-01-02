@@ -38,7 +38,7 @@
     "modbus-serial": "^7.5.1",
     "mqtt": "^4.2.1",
     "node-opcua": "^2.18.0",
-    "node-snap7": "^1.0.2",
+    "node-snap7": "^1.0.5",
     "oauth2orize": "1.5.0",
     "on-headers": "1.0.1",
     "portfinder": "^1.0.20",
