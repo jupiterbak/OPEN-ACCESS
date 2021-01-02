@@ -9,7 +9,7 @@
   "main": "open_access.js",
   "scripts": {
     "start": "node open_access.js",
-    "test": "mocha  --exit --timeout 10000"
+    "test": "mocha  --exit --timeout 30000"
   },
   "contributors": [
     "Jupiter Bakakeu"

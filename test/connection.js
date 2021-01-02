@@ -13,7 +13,7 @@ var server = require("../open_access");
 
 
 describe ("Connections", function(){
-    this.timeout(50000);
+    this.timeout(20000);
     describe ("Swagger API", function() {
         it("Settings", done=>{
             request("http://localhost:55554/api/v1/setting" , function(error, response, body) {
