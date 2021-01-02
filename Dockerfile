@@ -14,3 +14,4 @@ EXPOSE 8090
 # EXPOSE Additional Ports required by the nothbound and southbound modules
 
 CMD ["npm", "start"]
+
