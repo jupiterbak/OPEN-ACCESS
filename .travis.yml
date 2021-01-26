@@ -15,7 +15,8 @@ matrix:
 
 before_script:
     - npm install
+    - npm install
 
     
 cache:
-    npm: false
+    npm: true
