@@ -30,7 +30,8 @@ var DAISYOPCClient = function (ip, port, servername) {
     var self = this;
     portfinder.getPort(function (err, port) {
         if(!err){
-            self.socketHandler = require('socket.io').listen(port);
+            self.socketHandler = require('socket.io')();
+            self.socketHandler.listen(port);
         }
     });
 
