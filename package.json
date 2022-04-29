@@ -17,7 +17,7 @@
   "dependencies": {
     "@mindconnect/mindconnect-nodejs": "^3.8.0",
     "amqplib": "^0.8.0",
-    "async": "^2.6.2",
+    "async": "^2.6.4",
     "backoff": "^2.5.0",
     "basic-auth": "^1.0.4",
     "chokidar": "^3.5.2",
