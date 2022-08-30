@@ -34,7 +34,7 @@
     "md5": "^2.2.1",
     "modbus-serial": "^8.0.3",
     "mqtt": "^4.2.1",
-    "node-opcua": "^2.18.0",
+    "node-opcua": "^2.74.0",
     "node-snap7": "^1.0.6",
     "oauth2orize": "1.5.0",
     "on-headers": "1.0.1",
